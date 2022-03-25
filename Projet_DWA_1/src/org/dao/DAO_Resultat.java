@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import javax.persistence.Query;
+import org.donnees.Joueur;
+import org.donnees.Partie;
 import org.donnees.Resultat;
 
 /**
@@ -71,6 +73,10 @@ public class DAO_Resultat extends DAO<Resultat> {
         return this.getPartieResultats(codePartie.intValue());
     }
     
+    public List<Resultat> getPartieResultats(Partie p) {
+        return this.getPartieResultats(p.getCodePartie());
+    }
+    
     public List<Resultat> getJoueurResultats(String pseudo) {
         // Output Array
         List<Resultat> resultatArray = new ArrayList();
@@ -89,6 +95,10 @@ public class DAO_Resultat extends DAO<Resultat> {
         }
         
         return resultatArray;
+    }
+    
+    public List<Resultat> getJoueurResultats(Joueur j) {
+        return this.getJoueurResultats(j.getPseudo());
     }
 
 }
