@@ -5,16 +5,19 @@
 package org.donnees;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.Collection;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -25,52 +28,38 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Joueur.findAll", query = "SELECT j FROM Joueur j"),
-    @NamedQuery(name = "Joueur.findByCodeJoueur", query = "SELECT j FROM Joueur j WHERE j.codeJoueur = :codeJoueur"),
     @NamedQuery(name = "Joueur.findByPseudo", query = "SELECT j FROM Joueur j WHERE j.pseudo = :pseudo"),
-    @NamedQuery(name = "Joueur.findByMotDePasse", query = "SELECT j FROM Joueur j WHERE j.motDePasse = :motDePasse"),
+    @NamedQuery(name = "Joueur.findByMdp", query = "SELECT j FROM Joueur j WHERE j.mdp = :mdp"),
     @NamedQuery(name = "Joueur.findByAge", query = "SELECT j FROM Joueur j WHERE j.age = :age"),
     @NamedQuery(name = "Joueur.findBySexe", query = "SELECT j FROM Joueur j WHERE j.sexe = :sexe"),
     @NamedQuery(name = "Joueur.findByVille", query = "SELECT j FROM Joueur j WHERE j.ville = :ville")})
 public class Joueur implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
-    @Basic(optional = false)
-    @Column(name = "CODE_JOUEUR")
-    private BigDecimal codeJoueur;
     @Basic(optional = false)
     @Column(name = "PSEUDO")
     private String pseudo;
-    @Basic(optional = false)
-    @Column(name = "MOT_DE_PASSE")
-    private String motDePasse;
+    @Column(name = "MDP")
+    private String mdp;
     @Column(name = "AGE")
     private BigInteger age;
     @Column(name = "SEXE")
     private Character sexe;
     @Column(name = "VILLE")
     private String ville;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "joueur")
+    private Collection<Resultat> resultatCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "joueur")
+    private Collection<LancerCharge> lancerChargeCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "joueur")
+    private Collection<LancerDecharge> lancerDechargeCollection;
 
     public Joueur() {
     }
 
-    public Joueur(BigDecimal codeJoueur) {
-        this.codeJoueur = codeJoueur;
-    }
-
-    public Joueur(BigDecimal codeJoueur, String pseudo, String motDePasse) {
-        this.codeJoueur = codeJoueur;
+    public Joueur(String pseudo) {
         this.pseudo = pseudo;
-        this.motDePasse = motDePasse;
-    }
-
-    public BigDecimal getCodeJoueur() {
-        return codeJoueur;
-    }
-
-    public void setCodeJoueur(BigDecimal codeJoueur) {
-        this.codeJoueur = codeJoueur;
     }
 
     public String getPseudo() {
@@ -81,20 +70,28 @@ public class Joueur implements Serializable {
         this.pseudo = pseudo;
     }
 
-    public String getMotDePasse() {
-        return motDePasse;
+    public String getMdp() {
+        return mdp;
     }
 
-    public void setMotDePasse(String motDePasse) {
-        this.motDePasse = motDePasse;
+    public void setMdp(String mdp) {
+        this.mdp = mdp;
     }
 
     public BigInteger getAge() {
         return age;
     }
+    
+    public int getAgeINT() {
+        return this.getAge().intValue();
+    }
 
     public void setAge(BigInteger age) {
         this.age = age;
+    }
+    
+    public void setAge(int age) {
+        this.setAge(BigInteger.valueOf(age));
     }
 
     public Character getSexe() {
@@ -113,10 +110,37 @@ public class Joueur implements Serializable {
         this.ville = ville;
     }
 
+    @XmlTransient
+    public Collection<Resultat> getResultatCollection() {
+        return resultatCollection;
+    }
+
+    public void setResultatCollection(Collection<Resultat> resultatCollection) {
+        this.resultatCollection = resultatCollection;
+    }
+
+    @XmlTransient
+    public Collection<LancerCharge> getLancerChargeCollection() {
+        return lancerChargeCollection;
+    }
+
+    public void setLancerChargeCollection(Collection<LancerCharge> lancerChargeCollection) {
+        this.lancerChargeCollection = lancerChargeCollection;
+    }
+
+    @XmlTransient
+    public Collection<LancerDecharge> getLancerDechargeCollection() {
+        return lancerDechargeCollection;
+    }
+
+    public void setLancerDechargeCollection(Collection<LancerDecharge> lancerDechargeCollection) {
+        this.lancerDechargeCollection = lancerDechargeCollection;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (codeJoueur != null ? codeJoueur.hashCode() : 0);
+        hash += (pseudo != null ? pseudo.hashCode() : 0);
         return hash;
     }
 
@@ -127,7 +151,7 @@ public class Joueur implements Serializable {
             return false;
         }
         Joueur other = (Joueur) object;
-        if ((this.codeJoueur == null && other.codeJoueur != null) || (this.codeJoueur != null && !this.codeJoueur.equals(other.codeJoueur))) {
+        if ((this.pseudo == null && other.pseudo != null) || (this.pseudo != null && !this.pseudo.equals(other.pseudo))) {
             return false;
         }
         return true;
@@ -135,7 +159,7 @@ public class Joueur implements Serializable {
 
     @Override
     public String toString() {
-        return "org.donnees.Joueur[ codeJoueur=" + codeJoueur + " ]";
+        return "org.donnees.Joueur[ pseudo=" + pseudo + " ]";
     }
     
 }

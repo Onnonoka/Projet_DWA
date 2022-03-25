@@ -3,11 +3,14 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/E:/CODE/Cours/M1/S2/DWA/Projet_DWA_1/src/projet_dwa_1/Projet_DWA_1.java</file>
-            <file>file:/E:/CODE/Cours/M1/S2/DWA/Projet_DWA_1/src/org/dao/DAO_JPA_JOUEUR.java</file>
-            <file>file:/E:/CODE/Cours/M1/S2/DWA/Projet_DWA_1/src/org/dao/DAO.java</file>
-            <file>file:/E:/CODE/Cours/M1/S2/DWA/Projet_DWA_1/src/org/dao/DAOException.java</file>
-            <file>file:/E:/CODE/Cours/M1/S2/DWA/Projet_DWA_1/src/org/dao/persistence.xml</file>
+            <file>file:/E:/CODE/Cours/M1/S2/DWA/temp/Projet_DWA_1/src/org/dao/DAO_Resultat.java</file>
+            <file>file:/E:/CODE/Cours/M1/S2/DWA/temp/Projet_DWA_1/src/org/dao/DAO_Partie.java</file>
+            <file>file:/E:/CODE/Cours/M1/S2/DWA/temp/Projet_DWA_1/src/org/donnees/Resultat.java</file>
+            <file>file:/E:/CODE/Cours/M1/S2/DWA/temp/Projet_DWA_1/src/org/donnees/Joueur.java</file>
+            <file>file:/E:/CODE/Cours/M1/S2/DWA/temp/Projet_DWA_1/src/org/dao/DAO_LanceOrdre.java</file>
+            <file>file:/E:/CODE/Cours/M1/S2/DWA/temp/Projet_DWA_1/src/projet_dwa_1/Projet_DWA_1.java</file>
+            <file>file:/E:/CODE/Cours/M1/S2/DWA/temp/Projet_DWA_1/src/org/dao/DAO.java</file>
+            <file>file:/E:/CODE/Cours/M1/S2/DWA/temp/Projet_DWA_1/src/org/donnees/ResultatPK.java</file>
         </group>
     </open-files>
 </project-private>

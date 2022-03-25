@@ -4,7 +4,10 @@
  */
 package org.dao;
 
+import java.util.List;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
+import javax.persistence.Persistence;
 import javax.persistence.PersistenceContext;
 
 /**
@@ -15,7 +18,8 @@ import javax.persistence.PersistenceContext;
 public abstract class DAO<D> {
     
     @PersistenceContext
-    private EntityManager entityManager;
+    protected final EntityManager entityManager;
+    protected final EntityTransaction entityTransaction;
     private Class<D> clazz;
     
    /**
@@ -24,7 +28,7 @@ public abstract class DAO<D> {
      * @return l'instance de l'objet
      * @throws DAOException en cas de problème
     */
-    public D find(int id) throws DAOException {
+    public D find(Object id) throws DAOException {
         return entityManager.find(clazz, id);
     }
 
@@ -34,7 +38,9 @@ public abstract class DAO<D> {
      * @throws DAOException en cas de problème
      */
     public void create(D data) throws DAOException {
-        entityManager.persist( data );
+        this.entityTransaction.begin();
+        this.entityManager.persist( data );
+        this.entityTransaction.commit();
     }
 
     /**
@@ -44,7 +50,9 @@ public abstract class DAO<D> {
      * @throws DAOException en cas de problème
      */
     public void update(D data) throws DAOException {
-        entityManager.merge( data );
+        this.entityTransaction.begin();
+        this.entityManager.merge( data );
+        this.entityTransaction.commit();
     }
 
     /**
@@ -53,11 +61,24 @@ public abstract class DAO<D> {
      * @throws DAOException en cas de problème
      */
     public void delete(D data) throws DAOException {
-        entityManager.remove( data );
+        this.entityTransaction.begin();
+        this.entityManager.remove( data );
+        this.entityTransaction.commit();
     }
+    
+    /**
+     * Return all element from the table RESULTAT
+     * @return  all element from the table RESULTAT
+     */
+    public abstract List<D> findAll();
     
     protected void setClass(Class<D> classType) {
         clazz = classType;
+    }
+    
+    public DAO() {
+        this.entityManager = Persistence.createEntityManagerFactory("Projet_DWA").createEntityManager();
+        this.entityTransaction = this.entityManager.getTransaction();
     }
     
 }
