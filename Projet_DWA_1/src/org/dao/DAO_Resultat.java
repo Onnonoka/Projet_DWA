@@ -13,10 +13,6 @@ import org.donnees.Joueur;
 import org.donnees.Partie;
 import org.donnees.Resultat;
 
-/**
- *
- * @author fred2
- */
 public class DAO_Resultat extends DAO<Resultat> {
     
     public DAO_Resultat() {
@@ -25,8 +21,8 @@ public class DAO_Resultat extends DAO<Resultat> {
     }
     
     /**
-     * Return all element from the table RESULTAT
-     * @return  all element from the table RESULTAT
+     * Return all element from the table RESULTAT.
+     * @return  all element from the table RESULTAT.
      */
     @Override
     public List<Resultat> findAll() {
@@ -49,6 +45,11 @@ public class DAO_Resultat extends DAO<Resultat> {
         return resultatArray;
     }
     
+    /**
+     * returns the results of a game.
+     * @param codePartie an int.
+     * @return the results of a game.
+     */
     public List<Resultat> getPartieResultats(int codePartie) {
         // Output Array
         List<Resultat> resultatArray = new ArrayList();
@@ -69,14 +70,29 @@ public class DAO_Resultat extends DAO<Resultat> {
         return resultatArray;
     }
     
+    /**
+     * returns the results of a game.
+     * @param codePartie an int.
+     * @return the results of a game.
+     */
     public List<Resultat> getPartieResultats(BigInteger codePartie) {
         return this.getPartieResultats(codePartie.intValue());
     }
     
+    /**
+     * returns the results of a game.
+     * @param p a game.
+     * @return the results of a game.
+     */
     public List<Resultat> getPartieResultats(Partie p) {
         return this.getPartieResultats(p.getCodePartie());
     }
     
+   /**
+    * returns the results of a player.
+    * @param pseudo a string
+    * @return the results of a player.
+    */
     public List<Resultat> getJoueurResultats(String pseudo) {
         // Output Array
         List<Resultat> resultatArray = new ArrayList();
@@ -97,6 +113,11 @@ public class DAO_Resultat extends DAO<Resultat> {
         return resultatArray;
     }
     
+    /**
+    * returns the results of a player.
+    * @param j a player.
+    * @return the results of a player.
+    */
     public List<Resultat> getJoueurResultats(Joueur j) {
         return this.getJoueurResultats(j.getPseudo());
     }

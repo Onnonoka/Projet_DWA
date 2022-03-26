@@ -13,10 +13,6 @@ import org.donnees.LancerDecharge;
 import org.donnees.Partie;
 import org.donnees.ValDe;
 
-/**
- *
- * @author fred2
- */
 public class DAO_LancerDecharge extends DAO<LancerDecharge> {
     
     public DAO_LancerDecharge() {
@@ -45,6 +41,11 @@ public class DAO_LancerDecharge extends DAO<LancerDecharge> {
         return lancerDechargeArray;
     }
     
+    /**
+     * returns the list of throws of the discharge phase.
+     * @param codePartie an int.
+     * @return the list of throws of the discharge phase.
+     */
     public List<LancerDecharge> getPartieLancerDecharge(int codePartie) {
          // Output Array
         List<LancerDecharge> lancerDechargeArray = new ArrayList();
@@ -65,10 +66,20 @@ public class DAO_LancerDecharge extends DAO<LancerDecharge> {
         return lancerDechargeArray;
     }
     
+    /**
+     * returns the list of throws of the discharge phase.
+     * @param codePartie a BigInteger.
+     * @return the list of throws of the discharge phase.
+     */
     public List<LancerDecharge> getPartieLancerDecharge(BigInteger codePartie) { 
         return this.getPartieLancerDecharge(codePartie.intValue());
     }
     
+    /**
+     * returns the list of throws of the discharge phase.
+     * @param p a game.
+     * @return the list of throws of the discharge phase.
+     */
     public List<LancerDecharge> getPartieLancerDecharge(Partie p) {
         return this.getPartieLancerDecharge(p.getCodePartie());
     }

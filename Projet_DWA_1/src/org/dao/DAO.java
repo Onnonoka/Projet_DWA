@@ -11,8 +11,6 @@ import javax.persistence.Persistence;
 import javax.persistence.PersistenceContext;
 
 /**
- *
- * @author fred2
  * @param <D>
  */
 public abstract class DAO<D> {
@@ -23,52 +21,48 @@ public abstract class DAO<D> {
     private Class<D> clazz;
     
    /**
-     * Retourne à partir du support de persistance un objet en fonction de son identifiant
-     * @param id identifiant de l'objet
-     * @return l'instance de l'objet
-     * @throws DAOException en cas de problème
+     * Returns from the persistence support an object according to its identifier.
+     * @param id identifier of the object.
+     * @return  the instance of the object.
     */
-    public D find(Object id) throws DAOException {
+    public D find(Object id) {
         return entityManager.find(clazz, id);
     }
 
     /**
-     * Rend persistant un objet qui n'avait pas encore de réprésentation sur le support de persistance
-     * @param data l'objet à rendre persistant
-     * @throws DAOException en cas de problème
+     * Make persistent an object that had no representation on the persistence medium yet.
+     * @param data the object to make persistent.
      */
-    public void create(D data) throws DAOException {
+    public void create(D data) {
         this.entityTransaction.begin();
         this.entityManager.persist( data );
         this.entityTransaction.commit();
     }
 
     /**
-     * Met à jour le contenu correspondant à l'objet sur le support persistant (l'objet
-     * avait déjà une représentation sur le support persistant)
-     * @param data l'objet modifié dont le contenu est à mettre à jour
-     * @throws DAOException en cas de problème
+     * Update the content corresponding to the object on the persistent medium (the object.
+     * object already had a representation on the persistent medium).
+     * @param data the modified object whose content is to be updated.
      */
-    public void update(D data) throws DAOException {
+    public void update(D data) {
         this.entityTransaction.begin();
         this.entityManager.merge( data );
         this.entityTransaction.commit();
     }
 
     /**
-     * Efface du support persistant le contenu équivalent à l'objet
-     * @param data l'objet à supprimer 
-     * @throws DAOException en cas de problème
+     * Delete from the persistent medium the content equivalent to the object.
+     * @param data the object to delete.
      */
-    public void delete(D data) throws DAOException {
+    public void delete(D data) {
         this.entityTransaction.begin();
         this.entityManager.remove( data );
         this.entityTransaction.commit();
     }
     
     /**
-     * Return all element from the table RESULTAT
-     * @return  all element from the table RESULTAT
+     * Return all element from the table RESULTAT.
+     * @return  all element from the table RESULTAT.
      */
     public abstract List<D> findAll();
     

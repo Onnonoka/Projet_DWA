@@ -18,10 +18,6 @@ import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
-/**
- *
- * @author fred2
- */
 @Entity
 @Table(name = "VAL_DE")
 @XmlRootElement

@@ -6,7 +6,6 @@ package projet_dwa_1;
 
 import java.math.BigInteger;
 import java.util.List;
-import org.dao.DAOException;
 import org.dao.DAO_Joueur;
 import org.dao.DAO_LanceOrdre;
 import org.dao.DAO_LancerCharge;
@@ -24,13 +23,9 @@ import org.donnees.Resultat;
 import org.donnees.ResultatPK;
 import org.donnees.ValDe;
 
-/**
- *
- * @author fred2
- */
 public class Projet_DWA_1 {
     
-    public static void main(String[] args) throws DAOException {
+    public static void main(String[] args) {
 
             DAO_Joueur daoJoueur = new DAO_Joueur();
             DAO_Resultat daoResultat = new DAO_Resultat();
@@ -139,6 +134,12 @@ public class Projet_DWA_1 {
             System.out.println("Requete 3 : " + ldList);
             ldList = daoLD.getPartieLancerDecharge(p1);
             System.out.println("Requete 4 : " + ldList);
-            
+            /*j1 = new Joueur("Blanero");
+            daoJoueur.create(j1);
+            res1 = new Resultat(p1.getCodePartie(), j1.getPseudo());
+            res1.setNbJetonDecharge(0);
+            daoResultat.create(res1);*/
+            System.out.println(daoPartie.getPartieJoueur(p1));
+            System.out.println(daoPartie.getGagnantPartie(p1.getCodePartie()));
     }
 }

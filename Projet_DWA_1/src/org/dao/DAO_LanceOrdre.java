@@ -13,10 +13,6 @@ import org.donnees.LanceOrdre;
 import org.donnees.Partie;
 import org.donnees.ValDe;
 
-/**
- *
- * @author fred2
- */
 public class DAO_LanceOrdre extends DAO<LanceOrdre> {
     
     public DAO_LanceOrdre() {
@@ -45,6 +41,11 @@ public class DAO_LanceOrdre extends DAO<LanceOrdre> {
         return lanceOrdreArray;
     }
     
+    /**
+     * returns the list of throws to choose the order of the players.
+     * @param codePartie an int.
+     * @return the list of throws to choose the order of the players.
+     */
     public List<LanceOrdre> getPartieLanceOrdre(int codePartie) {
         // Output Array
         List<LanceOrdre> lanceOrdreArray = new ArrayList();
@@ -65,10 +66,20 @@ public class DAO_LanceOrdre extends DAO<LanceOrdre> {
         return lanceOrdreArray;
     }
     
+    /**
+     * returns the list of throws to choose the order of the players.
+     * @param codePartie a BigInteger.
+     * @return the list of throws to choose the order of the players.
+     */
     public List<LanceOrdre> getPartieLanceOrdre(BigInteger codePartie) {
         return this.getPartieLanceOrdre(codePartie.intValue());
     }
     
+    /**
+     * returns the list of throws to choose the order of the players.
+     * @param p a game.
+     * @return the list of throws to choose the order of the players.
+     */
     public List<LanceOrdre> getPartieLanceOrdre(Partie p) {
         return this.getPartieLanceOrdre(p.getCodePartie());
     }

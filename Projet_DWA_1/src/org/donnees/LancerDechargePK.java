@@ -10,10 +10,6 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
-/**
- *
- * @author fred2
- */
 @Embeddable
 public class LancerDechargePK implements Serializable {
 

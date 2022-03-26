@@ -12,10 +12,6 @@ import javax.persistence.Query;
 import org.donnees.Joueur;
 import org.donnees.Resultat;
 
-/**
- *
- * @author fred2
- */
 public class DAO_Joueur extends DAO<Joueur> {
     
     public DAO_Joueur() {
@@ -25,7 +21,7 @@ public class DAO_Joueur extends DAO<Joueur> {
 
     @Override
     public List<Joueur> findAll() {
-                // Output Array
+        // Output Array
         List<Joueur> joueurArray = new ArrayList();
         // Request
         Query query = this.entityManager.createQuery("select j.pseudo, j.mdp, j.age, j.sexe, j.ville from Joueur j");
@@ -47,9 +43,9 @@ public class DAO_Joueur extends DAO<Joueur> {
     }
     
     /**
-     * Return the number of win of a player
+     * Return the number of wins of a player
      * @param pseudo the pseudo of the player
-     * @return the number of win
+     * @return the number of wins
      */
     public int getJoueurNbVictoire(String pseudo) {
         DAO_Resultat daoResultat = new DAO_Resultat();
@@ -59,18 +55,18 @@ public class DAO_Joueur extends DAO<Joueur> {
     }
     
     /**
-     * Return the number of win of a player
-     * @param j the player
-     * @return the number of win
+     * Return the number of wins of a player.
+     * @param j the player.
+     * @return the number of wins.
      */
     public int getJoueurNbVictoire(Joueur j) {
         return this.getJoueurNbVictoire(j.getPseudo());
     }
     
     /**
-     * Return the number of game played by a player
-     * @param pseudo the pseudo of the player
-     * @return the number of game played
+     * Return the number of games played by a player.
+     * @param pseudo the pseudo of the player.
+     * @return the number of games played.
      */
     public int getJoueurNbPartie(String pseudo) {
         DAO_Resultat daoResultat = new DAO_Resultat();
@@ -80,36 +76,36 @@ public class DAO_Joueur extends DAO<Joueur> {
     }
     
     /**
-     * Return the number of game played by a player
-     * @param j  the player
-     * @return the number of game played
+     * Return the number of games played by a player.
+     * @param j  the player.
+     * @return the number of games played.
      */
     public int getJoueurNbPartie(Joueur j)  {
         return this.getJoueurNbPartie(j.getPseudo());
     }
     
     /**
-     * Return the average win number
-     * @param pseudo the player pseudo
-     * @return the average win number
+     * Return the average wins number.
+     * @param pseudo the player pseudo.
+     * @return the average wins number.
      */
     public float getJoueurRatio(String pseudo) {
         return this.getJoueurNbVictoire(pseudo) / this.getJoueurNbPartie(pseudo);
     }
     
      /**
-     * Return the average win number
-     * @param j the player
-     * @return the average win number
+     * Return the average wins number.
+     * @param j the player.
+     * @return the average wins number.
      */
     public float getJoueurRatio(Joueur j) {
         return this.getJoueurRatio(j.getPseudo());
     }
     
     /**
-     * Return the average number of token iat the end of the charge phase for a player
-     * @param pseudo the player pseudo
-     * @return the average
+     * Return the average number of tokens at the end of the charge phase for a player.
+     * @param pseudo the player pseudo.
+     * @return the average.
      */
     public float getNbJetonChargeMoyenJoueur(String pseudo) {
         DAO_Resultat daoResultat = new DAO_Resultat();
@@ -120,18 +116,18 @@ public class DAO_Joueur extends DAO<Joueur> {
     }
     
     /**
-     * Return the average number of token iat the end of the charge phase for a player
-     * @param j the player
-     * @return the average
+     * Return the average number of tokens at the end of the charge phase for a player.
+     * @param j the player.
+     * @return the average.
      */
     public float getNbJetonChargeMoyenJoueur(Joueur j) {
         return this.getNbJetonChargeMoyenJoueur(j.getPseudo());
     }
     
     /**
-     * Return the average number of token iat the end of the charge phase for a player
-     * @param pseudo the player pseudo
-     * @return the average
+     * Return the average number of tokens at the end of the decharge phase for a player.
+     * @param pseudo the player pseudo.
+     * @return the average.
      */
     public float getNbJetonDechargeMoyenJoueur(String pseudo) {
         DAO_Resultat daoResultat = new DAO_Resultat();
@@ -142,9 +138,9 @@ public class DAO_Joueur extends DAO<Joueur> {
     }
     
     /**
-     * Return the average number of token iat the end of the charge phase for a player
-     * @param j the player
-     * @return the average
+     * Return the average number of tokens at the end of the decharge phase for a player.
+     * @param j the player.
+     * @return the average.
      */
     public float getNbJetonDechargeMoyenJoueur(Joueur j) {
         return this.getNbJetonDechargeMoyenJoueur(j.getPseudo());

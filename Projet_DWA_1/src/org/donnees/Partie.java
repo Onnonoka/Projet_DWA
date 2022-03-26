@@ -23,10 +23,6 @@ import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
-/**
- *
- * @author fred2
- */
 @Entity
 @Table(name = "PARTIE")
 @XmlRootElement
@@ -160,6 +156,10 @@ public class Partie implements Serializable {
     @Override
     public String toString() {
         return "org.donnees.Partie[ codePartie=" + codePartie + " ]";
+    }
+
+    public void dateDeb(Date date) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
     
 }
