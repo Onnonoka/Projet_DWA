@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+  <persistence-unit name="Projet_DWA" transaction-type="RESOURCE_LOCAL">
+    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    <class>org.donnees.Joueur</class>
+    <class>org.donnees.LanceOrdre</class>
+    <class>org.donnees.LancerCharge</class>
+    <class>org.donnees.Partie</class>
+    <class>org.donnees.LancerDecharge</class>
+    <class>org.donnees.Resultat</class>
+    <class>org.donnees.ValDe</class>
+    <properties>
+      <property name="javax.persistence.jdbc.url" value="jdbc:oracle:thin:@scinfe098:1521:etud"/>
+      <property name="javax.persistence.jdbc.user" value="fdymko"/>
+      <property name="javax.persistence.jdbc.driver" value="oracle.jdbc.OracleDriver"/>
+      <property name="javax.persistence.jdbc.password" value="fdymko"/>
+    </properties>
+  </persistence-unit>
+</persistence>
