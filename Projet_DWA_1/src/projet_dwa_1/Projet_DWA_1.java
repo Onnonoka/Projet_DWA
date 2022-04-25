@@ -141,5 +141,9 @@ public class Projet_DWA_1 {
             daoResultat.create(res1);*/
             System.out.println(daoPartie.getPartieJoueur(p1));
             System.out.println(daoPartie.getGagnantPartie(p1.getCodePartie()));
+            
+            System.out.println("--------------------------------------");
+            Joueur player = daoJoueur.find("azer");
+            System.out.println("Player = " + player);
     }
 }
