@@ -51,11 +51,17 @@ public class Projet_DWA_1 {
             List<LancerCharge> lcList;
             List<LancerDecharge> ldList;
 
-            /*j1.setPseudo("Ono");
-            j1.setMdp("010203");
-            j1.setAge(BigInteger.valueOf(24));
-            j1.setSexe('H');
-            j1.setVille("Pau");
+            /*try {
+                j1.setPseudo("Ono");
+                j1.setMdp("010203");
+                j1.setAge(BigInteger.valueOf(24));
+                j1.setSexe('H');
+                j1.setVille("Pau");
+                daoJoueur.create(j1);
+            } catch (Exception e) {
+                System.out.println("Erreur");
+            }*/
+            /*
             
             p1.setCodePartie(BigDecimal.valueOf(10));
             
@@ -70,7 +76,7 @@ public class Projet_DWA_1 {
             daoResultat.create(res1);*/
             
             j1 = daoJoueur.find("Ono");
-            System.out.println(j1.getPseudo() + " " + j1.getMdp());
+            System.out.println(j1.getPseudo() + " " + j1.getMdp());/*
             
             p1 = daoPartie.find(BigInteger.valueOf(10));
             System.out.println(p1.getCodePartie());
@@ -125,7 +131,7 @@ public class Projet_DWA_1 {
             lc.setCodeDe(d1);
             daoLD.create(ld);*/
             
-            lcList = daoLC.findAll();
+            /*lcList = daoLC.findAll();
             System.out.println("Requete 1 : " + lcList);
             lcList = daoLC.getPartieLancerCharge(p1);
             System.out.println("Requete 2 : " + lcList);
@@ -139,11 +145,14 @@ public class Projet_DWA_1 {
             res1 = new Resultat(p1.getCodePartie(), j1.getPseudo());
             res1.setNbJetonDecharge(0);
             daoResultat.create(res1);*/
-            System.out.println(daoPartie.getPartieJoueur(p1));
+           /* System.out.println(daoPartie.getPartieJoueur(p1));
             System.out.println(daoPartie.getGagnantPartie(p1.getCodePartie()));
             
             System.out.println("--------------------------------------");
             Joueur player = daoJoueur.find("azer");
-            System.out.println("Player = " + player);
+            System.out.println("Player = " + player);*/
+           /*j1.setPseudo("Ono");
+           j1.setMdp("123");
+           daoJoueur.create(j1);*/
     }
 }

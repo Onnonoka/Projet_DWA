@@ -16,24 +16,321 @@ body {
 #app {
     display: grid;
     grid-template-columns: 80% auto;
-    grid-template-rows: 80% auto;
+    grid-template-rows: 5% auto;
     height: 100vh;
+    overflow: hidden;
 }
 
-#game {
+#header {
+    grid-column: 1 / 3;
+    grid-row: 1;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 5px;
+    border-bottom: 3px solid #8a9ba6;
+    color: #aaaaaa;
+    font-size: 1.5rem;
+}
+
+#header button {
+    background-color: #0084d600;
+    border: solid 2px #0084d6;
+    border-radius: 20px;
+    color: #0084d6;
+    margin-left: 5px;
+    height: 100%;
+    font-size: 1.2rem;
+}
+#header button:hover {
+    background-color: #0084d6ff;
+    border: solid 2px #0084d6;
+    border-radius: 20px;
+    color: #ffffff;
+    margin-left: 5px;
+}
+
+#main {
+    grid-column: 1;
+    grid-row: 2;
+    background-color: black;
+    display: grid;
+    grid-template-columns: auto;
+    grid-template-rows: 5% auto;
+}
+#main #header {
     grid-column: 1;
     grid-row: 1;
-    background-color: black;
+    background-color: #ffffff;
+    border-color: #0084d6;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    color: #aaaaaa;
+    padding: 0;
 }
+#main .tab {
+    border: 3px solid #aaaaaa;
+    border-bottom: none;
+    height: 100%;
+    padding-left: 10px;
+    padding-right: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#main .tab.selected {
+    border-color: #0084d6;
+    color: #eeeeee;
+    background-color: #0084d6;
+}
+#main #main-content {
+    grid-column: 1;
+    grid-row: 2;
+    width: 100%;
+    height: 100%;
+    background-color: #ffffff;
+    padding: 2%;
+}
+#main-content .pseudo {
+    font-size: 4rem;
+    color: #0084d6;
+}
+#main-content .info, #main-content .data {
+    margin-top: 2%;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    font-size: 2rem;
+}
+#main-content .data {
+    font-size: 1rem;
+    white-space: wrap;
+}
+#main-content .info div, #main-content .data div {
+    margin-right: 3%;
+    white-space: nowrap;
+}
+
 
 #users {
     grid-column: 2;
-    grid-row: 1 / 2;
-    background-color: red;
+    grid-row: 2;
+    border: solid 2px #0084d6;
+    display: grid;
+    grid-template-columns: auto;
+    grid-template-rows: 8% auto 10%;
+}
+#users #header {
+    grid-row: 1;
+    grid-column: 1;
+    justify-content: center;
+    align-items: center;
+    background-color: #0084d6;
+    border-color: #0084d6;
+    color: #eeeeee;
+    font-size: 1.5rem;
+}
+#users #list {
+    grid-column: 1;
+    grid-row: 2;
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+}
+.user {
+    display: flex;
+    justify-content: flex-start;
+    background-color: transparent;
+    border: 2px solid #0084d6;
+    font-size: 1.2rem;
+    margin-top: 2px;
+    margin-left: 2px;
+    margin-right: 2px;
+    color: #0084d6;
+}
+.user.selected {
+    background-color: #0084d6;
+    color: #eeeeee;
+}
+#users #footer {
+    grid-column: 1;
+    grid-row: 3;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#users #footer button {
+    background-color: #0084d600;
+    border: solid 3px #0084d6;
+    border-radius: 20px;
+    color: #0084d6;
+    width: 90%;
+    height: 90%;
+    font-size: 1.5rem;
+}
+#users #footer button.enable:hover {
+    background-color: #0084d6ff;
+    color: #ffffff;
+}
+#users #footer button.disabled {
+    border: solid 3px #aaaaaa;
+    color: #aaaaaa;
+}
+#users #footer button.disabled:hover {
+    border: solid 3px #aaaaaa;
+    color: #aaaaaa;
 }
 
 #chat {
     grid-column: 1 / 3;
-    grid-row: 2;
+    grid-row: 3;
     background-color: green;
+}
+
+#popup {
+    position: absolute;
+    background-color: white;
+    width: 40%;
+    height: fit-content;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: auto;
+    margin-bottom: auto;
+    display: grid;
+    grid-template-columns: auto;
+    grid-template-rows: 15% 70%;
+    border: 5px solid #004774;
+    border-radius: 20px;
+    font-size: 2rem;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+    color: #0084d6;
+}
+#popup .title {
+    grid-row: 1;
+    grid-column: 1;
+    padding-left: 5%;
+    padding-top: 2%;
+    padding-bottom: 2%;
+    background-color: #0084d6ff;
+    width: 95.1%;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    color: #eeeeee;
+}
+#popup .content {
+    grid-row: 2;
+    grid-column: 1;
+    padding-left: 5%;
+    padding-right: 5%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding-top: 5%;
+    padding-bottom: 5%;
+    margin-bottom: 5%;
+    width: 90%;
+    height: 100%;
+}
+#popup .auth .content input {
+    margin-bottom: 5%;
+    background-color: #0084d600;
+    border: solid 2px #0084d6;
+    border-radius: 5px;
+    color: #111111;
+    height: 30%;
+    font-size: 1.2rem;
+}
+#popup .auth .content input#password {
+    margin-bottom: 5%;
+    background-color: #0084d600;
+    border: solid 2px #0084d6;
+    border-radius: 5px;
+    color: #111111;
+    height: 30%;
+    font-size: 1.2rem;
+}
+#popup .auth .content button {
+    background-color: #0084d600;
+    border: solid 2px #0084d6;
+    border-radius: 20px;
+    color: #0084d6;
+    margin-left: 5px;
+    height: 50%;
+    font-size: 1.2rem;
+}
+#popup .auth .content button:hover {
+    background-color: #0084d6ff;
+    border: solid 2px #0084d6;
+    border-radius: 20px;
+    color: #ffffff;
+    margin-left: 5px;
+}
+#popup .content .error {
+    color: red;
+    font-size: 1rem;
+    margin-bottom: 1%;
+}
+#popup .content .footer {
+    grid-column: 1;
+    grid-row: 3;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+#popup .content .footer button {
+    background-color: #0084d600;
+    border: solid 3px #0084d6;
+    border-radius: 20px;
+    color: #0084d6;
+    width: fit-content;
+    height: 90%;
+    overflow: visible;
+    font-size: 1.5rem;
+    margin-top: 10%;
+}
+#popup .content .footer button.enable:hover {
+    background-color: #0084d6ff;
+    color: #ffffff;
+}
+#popup .content .footer button.disabled {
+    border: solid 3px #aaaaaa;
+    color: #aaaaaa;
+}
+#popup .content .footer button.disabled:hover {
+    border: solid 3px #aaaaaa;
+    color: #aaaaaa;
+}
+#popup .list {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+}
+#popup .user {
+    display: flex;
+    justify-content: space-between;
+    background-color: transparent;
+    border: 2px solid #0084d6;
+    font-size: 1.2rem;
+    margin-top: 2px;
+    margin-left: 2px;
+    margin-right: 2px;
+    color: #0084d6;
+    width: 100%;
+}
+#popup .user.selected {
+    background-color: #0084d6;
+    color: #eeeeee;
 }

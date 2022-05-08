@@ -3,26 +3,66 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/JavaScript.js to edit this template
  */
 
-class controler {
+import AuthPopup from "./AuthPopup.js";
+import Model from "./Model.js";
+import { RequestBuilder } from "./RequestBuilder.js";
+
+class Controler {
     model;                 // the model of the app
     vue;                    // the vue of the app
-    
-    wsUri;                 // the uri of the websocket server
-    ws;                     // the websocket connexion to the server
     
     constructor(model, vue) {
         this.model = model;
         this.vue = vue;
-        
-        this.wsUri = "ws://localhost:8080/Projet_DWA_2/ws421";
-        this.ws = new WebSocket(this.wsUri);
-        this.ws.onopen = this.wsOnOpen;
-        console.log(this.ws);
+
+        this.vue.init();
+        this.model.ws.onopen = this.wsOnOpen.bind(this);
+        this.model.ws.onmessage = this.wsOnMessage.bind(this);
+        this.model.ws.onclose = this.wsOnClose.bind(this);
+
+        console.log(this.model.ws);
     }
     
     wsOnOpen(event) {
         console.log("connected");
     }
+
+    wsOnMessage(event) {
+        const reply = JSON.parse(event.data);
+        console.log("Message", reply);
+        switch(reply.code) {
+            case RequestBuilder.AUTH_LOGIN :
+                this.model.userData.username = reply.data.pseudo;
+                this.model.userData.data = reply.data;
+                this.model.loginStatus = Model.CONNECTED;
+            case RequestBuilder.INFO_GET_PROFILE :
+                this.vue.main.addProfileTab(reply.data);
+                break;
+            case RequestBuilder.AUTH_WRONG_CREDENTIALS :
+                new AuthPopup(this.model, RequestBuilder.AUTH_LOGIN, RequestBuilder.AUTH_WRONG_CREDENTIALS);
+                this.model.loginStatus = Model.DISCONECTED;
+                break;
+            case RequestBuilder.AUTH_USERNAME_ALREADY_USED :
+                new AuthPopup(this.model, RequestBuilder.AUTH_REGISTER, RequestBuilder.AUTH_USERNAME_ALREADY_USED);
+                break;
+            case RequestBuilder.INFO_PLAYER_LIST : 
+                this.model.userConnected = reply.data.usernames;
+                break;
+            case RequestBuilder.GAME_NEW_GAME :
+                this.vue.main.addGameTab(reply.data.id, reply.data.player.map(e => e.username));
+                break;
+            case RequestBuilder.GAME_STARTING :
+                this.vue.main.getGameTab(reply.data.id).setStatus(reply.data.player.map(e => e.status));
+                break;
+
+        }
+        this.vue.update();
+
+    }
+
+    wsOnClose(event) {
+        console.log("disconected");
+    }
 }
 
-export default controler;
+export default Controler;
