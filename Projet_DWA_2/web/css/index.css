@@ -41,7 +41,9 @@ body {
     color: #0084d6;
     margin-left: 5px;
     height: 100%;
-    font-size: 1.2rem;
+    font-size: 0.9rem;
+    text-align: center;
+    overflow: auto;
 }
 #header button:hover {
     background-color: #0084d6ff;
@@ -316,6 +318,7 @@ body {
     margin-bottom: 5%;
     width: 90%;
     height: 100%;
+    font-size: 1.3rem;
 }
 #popup .auth .content input {
     margin-bottom: 5%;
@@ -323,8 +326,8 @@ body {
     border: solid 2px #0084d6;
     border-radius: 5px;
     color: #111111;
-    height: 30%;
-    font-size: 1.2rem;
+    height: 8%;
+    font-size: 1.1rem;
 }
 #popup .auth .content input#password {
     margin-bottom: 5%;
@@ -332,7 +335,7 @@ body {
     border: solid 2px #0084d6;
     border-radius: 5px;
     color: #111111;
-    height: 30%;
+    height: 8%;
     font-size: 1.2rem;
 }
 #popup .auth .content button {
@@ -341,7 +344,7 @@ body {
     border-radius: 20px;
     color: #0084d6;
     margin-left: 5px;
-    height: 50%;
+    height: 15%;
     font-size: 1.2rem;
 }
 #popup .auth .content button:hover {
@@ -360,7 +363,7 @@ body {
     grid-column: 1;
     grid-row: 3;
     width: 100%;
-    height: 100%;
+    height: fit-content;
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -371,7 +374,7 @@ body {
     border-radius: 20px;
     color: #0084d6;
     width: fit-content;
-    height: 90%;
+    height: fit-content;
     overflow: visible;
     font-size: 1.5rem;
     margin-top: 10%;
@@ -391,7 +394,7 @@ body {
 #popup .list {
     display: flex;
     flex-direction: column;
-    height: 100%;
+    height: fit-content;
     width: 100%;
 }
 #popup .user {

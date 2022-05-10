@@ -19,6 +19,7 @@ class ProfileTab {
             <div class="info">
                 <div>Sexe : ${this.player.sexe}</div>
                 <div>Ville : ${this.player.ville}</div>
+                <div>Age : ${this.player.age}</div>
             </div>
             <div class="data">
                 <div>Nombre de victoire : ${this.player.win}</div>
