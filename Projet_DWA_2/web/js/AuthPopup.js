@@ -61,7 +61,7 @@ class AuthPopup {
                 username: username,
                 password: password
             }
-        })
+        });
         this.container.style.display = "none";
         this.model.ws.send(requestMessage);
         if (this.requestType === RequestBuilder.AUTH_LOGIN) {

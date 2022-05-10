@@ -134,6 +134,7 @@ public class RequestBuilder {
                 jsonDataMessage.put("usernames", jsonArrayMessage);
                 jsonReplyMessage.put("data", jsonDataMessage);
                 break;
+            case AUTH_UPDATE : 
             case GAME_NEW_GAME :
             case GAME_STARTING :
             case GAME_START :
