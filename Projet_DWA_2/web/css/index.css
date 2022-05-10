@@ -89,8 +89,6 @@ body {
 #main #main-content {
     grid-column: 1;
     grid-row: 2;
-    width: 100%;
-    height: 100%;
     background-color: #ffffff;
     padding: 2%;
 }
@@ -113,7 +111,91 @@ body {
     margin-right: 3%;
     white-space: nowrap;
 }
+#main-content .game {
+    display: grid;
+    grid-template-rows: auto 5% 40% 20%;
+    grid-template-columns: 15% auto;
+    width: 100%;
+    height: 100%;
+}
+#main-content .game .players {
+    grid-column: 1;
+    grid-row: 1/4;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding: 5%;
 
+}
+#main-content .game .player {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 5%;
+    padding: 5%;
+    font-size: 1.5rem;
+    color: #aaaaaa;
+    border: solid 4px #aaaaaa;
+}
+#main-content .game .player.current {
+    color: #0084d6;
+    border: solid 4px #0084d6;
+}
+#main-content .game .center-token {
+    grid-column: 2;
+    grid-row: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 5rem;
+}
+#main-content .game .message {
+    grid-column: 2;
+    grid-row: 2;
+    height: 100%;
+    font-size: 5rem;
+    overflow: visible;
+    color: #0084d6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#main-content .game .dices {
+    grid-column: 2;
+    grid-row: 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+#main-content .game .dices .dice {
+    font-size: 5rem;
+    width: 6rem;
+    height: 6rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #00000000;
+    border-radius: 20px;
+    border: solid 5px #0084d6;
+    color: #0084d6;
+    margin-right: 5%;
+}
+#main-content .game .bottom {
+    grid-column: 2;
+    grid-row: 4;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center ;
+    height: 100%;
+}
+#main-content .game .bottom button {
+    height: 50%;
+    width: 20%;
+}
 
 #users {
     grid-column: 2;
@@ -184,12 +266,6 @@ body {
 #users #footer button.disabled:hover {
     border: solid 3px #aaaaaa;
     color: #aaaaaa;
-}
-
-#chat {
-    grid-column: 1 / 3;
-    grid-row: 3;
-    background-color: green;
 }
 
 #popup {

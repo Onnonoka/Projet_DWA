@@ -20,9 +20,12 @@ public class GamePlayer {
     
     private int status;
     
+    private int token;
+    
     public GamePlayer(Joueur j) {
         joueur = j;
         status = PLAYER_WAITING;
+        token = 0;
     }
     
     public void setStatus(int s) {
@@ -35,6 +38,10 @@ public class GamePlayer {
     
     public Joueur get() {
         return joueur;
+    }
+    
+    public int getToken() {
+        return token;
     }
     
 }

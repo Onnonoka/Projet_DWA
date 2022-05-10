@@ -41,6 +41,10 @@ public class RequestBuilder {
     public static final int GAME_START = 10;
     public static final int GAME_CANCEL = 11;
     
+    public static final int GAME_DATA = 12;
+    public static final int GAME_LUNCH_DICE = 13;
+    public static final int GAME_END_TURN = 14;
+    
     private String message;
     
     private int code = UNDEFINED_CODE;
@@ -132,6 +136,9 @@ public class RequestBuilder {
                 break;
             case GAME_NEW_GAME :
             case GAME_STARTING :
+            case GAME_START :
+            case GAME_CANCEL :
+            case GAME_DATA :
                 jsonReplyMessage.put("data", data);
                 break;
             case AUTH_WRONG_CREDENTIALS:

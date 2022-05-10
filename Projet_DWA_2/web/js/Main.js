@@ -72,6 +72,19 @@ class Main {
         this.update();
     }
 
+    removeGameTab(gameId) {
+        const index = this.tabsTitle.indexOf("Partie " + gameId);
+        if (index > -1) {
+            this.tabs[index].closePopup();
+            this.tabsTitle.splice(index, 1);
+            this.tabs.splice(index, 1);
+        }
+        if (this.tabIndex >= this.tabsTitle.length) {
+            this.tabIndex--;
+        }
+        this.update();
+    }
+
     getGameTab(gameId) {
         let tab;
         this.tabs.forEach( element => {

@@ -54,6 +54,16 @@ class Controler {
             case RequestBuilder.GAME_STARTING :
                 this.vue.main.getGameTab(reply.data.id).setStatus(reply.data.player.map(e => e.status));
                 break;
+            case RequestBuilder.GAME_CANCEL :
+                this.vue.main.removeGameTab(reply.data.id);
+                break;
+            case RequestBuilder.GAME_START :
+                this.vue.main.getGameTab(reply.data.id).closePopup();
+                this.vue.main.getGameTab(reply.data.id).gameStarted = true;
+                break;
+            case RequestBuilder.GAME_DATA :
+                this.vue.main.getGameTab(reply.data.id).setGameData(reply.data);
+                break;
 
         }
         this.vue.update();

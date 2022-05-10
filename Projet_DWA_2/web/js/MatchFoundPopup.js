@@ -68,6 +68,11 @@ class MatchFoundPopup {
         this.update();
     }
 
+    close() {
+        this.container.innerHTML = "";
+        this.container.style.display = "none";
+    }
+
     sendRequest(accept) {
         let requestMessage = JSON.stringify({
             code: accept? RequestBuilder.GAME_READY : RequestBuilder.GAME_NOT_READY,
