@@ -39,9 +39,6 @@ public class ws421 {
                 case RequestBuilder.AUTH_REGISTER :
                     authManager.register(peer, request);
                     break;
-                case RequestBuilder.AUTH_UPDATE :
-                    authManager.update(peer, request);
-                    break;
                 case RequestBuilder.INFO_GET_PROFILE:
                     authManager.getUserInfo(peer, request);
                     break;
@@ -57,6 +54,11 @@ public class ws421 {
                 case RequestBuilder.GAME_NOT_READY :
                     gamesManager.playerRefuse(peer, request);
                     break;
+                case RequestBuilder.GAME_LUNCH_DICE :
+                    gamesManager.playerLunchDice(peer, request);
+                    break;
+                case RequestBuilder.GAME_END_ROLL :
+                    gamesManager.playerEndTurn(peer, request);
             }
         } catch (Exception e) {
             e.printStackTrace();

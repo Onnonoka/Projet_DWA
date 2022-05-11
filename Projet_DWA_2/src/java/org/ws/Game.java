@@ -19,6 +19,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.websocket.Session;
 import org.donnees.Joueur;
+import org.donnees.LancerCharge;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -28,18 +29,22 @@ import org.json.JSONObject;
  */
 public class Game {
     
-    private static final int GAME_ABORT = -2;
-    private static final int GAME_CREATING = -1;
-    private static final int GAME_CHECKING = 0;
-    private static final int GAME_CHARGE = 1;
-    private static final int GAME_ORDER = 2;
-    private static final int GAME_DECHARGE = 3;
-    private static final int GAME_END = 4;
+    public static final int GAME_ABORT = -2;
+    public static final int GAME_CREATING = -1;
+    public static final int GAME_CHECKING = 0;
+    public static final int GAME_CHARGE = 1;
+    public static final int GAME_ORDER = 2;
+    public static final int GAME_DECHARGE = 3;
+    public static final int GAME_END = 4;
 
     private final int gameId;
     private int gameStatus;
     
     private Map<Session, GamePlayer> players;
+    
+    private GameLoad loadPhase;
+    
+    private List<GamePlayer> playerOrder;
     
     private int currentPlayer;
     
@@ -49,12 +54,15 @@ public class Game {
         gameStatus = GAME_CREATING;
         gameId = id;
         players = new HashMap<>();
+        playerOrder = new ArrayList();
         currentPlayer = 0;
         gameToken = 21;
     }
     
     public void addPlayer(Session s, Joueur j) {
-        players.put(s, new GamePlayer(j));
+        GamePlayer gp = new GamePlayer(j);
+        players.put(s, gp);
+        playerOrder.add(gp);
     }
     
     public void startGame() {
@@ -147,43 +155,29 @@ public class Game {
     
     private void lunchGame() throws Exception {
         gameStatus = GAME_CHARGE;
-        RequestBuilder request = new RequestBuilder();
-        JSONObject jsonData = new JSONObject();
-        Set<Session> peers = players.keySet();
-        
-        jsonData.put("id", gameId);
-        request.setData(RequestBuilder.GAME_START, jsonData);  
-        request.build();
-        
-        for (Session peer : peers) {
-            peer.getBasicRemote().sendText(request.getMessage());
-        }
-        System.out.println("GAME CHARGE STARTED ID : " + gameId);
-        sendGame();
+
+        loadPhase = new GameLoad(gameId, players, playerOrder);
+        loadPhase.start();
     }
     
-    private void sendGame() throws Exception {
-        RequestBuilder request = new RequestBuilder();
-        JSONObject jsonData = new JSONObject();
-        JSONArray playerArray = new JSONArray();
-        Set<Session> peers = players.keySet();
-        
-        jsonData.put("id", gameId);
-        jsonData.put("remainToken", gameToken);
-        jsonData.put("currentPlayer", currentPlayer);
-        
-        for (Session peer : peers) {
-            JSONObject singlePlayer = new JSONObject();
-            singlePlayer.put("username", players.get(peer).get().getPseudo());
-            singlePlayer.put("token", players.get(peer).getToken());
-            playerArray.put(singlePlayer);
-        }
-        jsonData.put("players", playerArray);
-        
-        request.setData(RequestBuilder.GAME_DATA, jsonData);        
-        request.build();
-        for (Session peer : peers) {
-            peer.getBasicRemote().sendText(request.getMessage());
+    public void newRoll(Session peer, JSONArray dices) throws Exception {        
+        switch(gameStatus) {
+            case GAME_CHARGE:
+                loadPhase.newRoll(peer, dices);
+                break;
         }
     }
+
+    
+    public void endTurn(Session peer) throws Exception {
+        switch(gameStatus) {
+            case GAME_CHARGE:
+                loadPhase.endRoll(peer);
+                if (loadPhase.isEnded()) {
+                    gameStatus = GAME_ORDER;
+                }
+                break;
+        }
+    }
+    
 }

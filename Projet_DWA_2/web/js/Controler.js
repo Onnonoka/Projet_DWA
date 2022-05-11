@@ -60,9 +60,16 @@ class Controler {
             case RequestBuilder.GAME_START :
                 this.vue.main.getGameTab(reply.data.id).closePopup();
                 this.vue.main.getGameTab(reply.data.id).gameStarted = true;
+                this.vue.main.getGameTab(reply.data.id).setGameData(reply.data);
                 break;
             case RequestBuilder.GAME_DATA :
                 this.vue.main.getGameTab(reply.data.id).setGameData(reply.data);
+                break;
+            case RequestBuilder.GAME_LUNCH_DICE : 
+                this.vue.main.getGameTab(reply.data.id).game.setDices(reply.data.dices);
+                break;
+            case RequestBuilder.GAME_END_ROLL :
+                this.vue.main.getGameTab(reply.data.id).game.endRoll();
                 break;
 
         }

@@ -34,7 +34,7 @@ public class GamesManager {
         authManager = am;
     }
     
-    public void createNewGame(Session peer, RequestBuilder request) {
+    public void createNewGame(Session peer, RequestBuilder request) throws Exception {
         int id = nextAvailableId;
         nextAvailableId++;
         JSONObject data = request.getData();
@@ -50,11 +50,7 @@ public class GamesManager {
                 if (authManager.isLogged(username)) {
                     game.addPlayer(authManager.getSession(username), authManager.getPlayer(username));
                 } else {
-                    try {
-                        game.abort();
-                    } catch (Exception ex) {
-                        Logger.getLogger(GamesManager.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                    game.abort();
                 }
             }
             game.startGame();
@@ -70,6 +66,16 @@ public class GamesManager {
     public void playerRefuse(Session peer, RequestBuilder request) {
         int id = request.getData().getInt("id");
         games.get(id).setPlayerStatus(peer, GamePlayer.PLAYER_REFUSE);
+    }
+    
+    public void playerLunchDice(Session peer, RequestBuilder request) throws Exception {
+        int id = request.getData().getInt("id");
+        games.get(id).newRoll(peer, request.getData().getJSONArray("dices"));
+    }
+    
+    public void playerEndTurn(Session peer, RequestBuilder request) throws Exception {
+        int id = request.getData().getInt("id");
+        games.get(id).endTurn(peer);
     }
     
 }

@@ -3,8 +3,8 @@ class RequestBuilder {
     static UNDEFINED_CODE = -999;
     
     static TIMED_OUT = -900;
-    static USER_DISCONECTED = -20;
-
+    static USER_DISCONNECTED = -20;
+    
     static GAME_WRONG_PLAYER = -13;
     
     static INFO_WRONG_USERNAME = -3;
@@ -26,10 +26,10 @@ class RequestBuilder {
     static GAME_NOT_READY = 9;
     static GAME_START = 10;
     static GAME_CANCEL = 11;
-
+    
     static GAME_DATA = 12;
     static GAME_LUNCH_DICE = 13;
-    static GAME_END_TURN = 14;
+    static GAME_END_ROLL = 14;
 
 }
 

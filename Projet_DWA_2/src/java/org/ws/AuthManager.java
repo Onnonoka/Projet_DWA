@@ -16,7 +16,6 @@ import java.util.logging.Logger;
 import javax.websocket.Session;
 import org.dao.DAO_Joueur;
 import org.donnees.Joueur;
-import org.json.JSONObject;
 
 /**
  *
@@ -129,31 +128,8 @@ public class AuthManager {
         peer.getBasicRemote().sendText(reply.getMessage());
     }
     
-    public void update(Session peer, RequestBuilder request) throws Exception {
-        DAO_Joueur daoJoueur = new DAO_Joueur();
-        if (loggedPlayer.containsKey(peer)) {
-            Joueur j = daoJoueur.find(request.getUsername());
-            if (j != null) {
-                Integer age = request.getData().getInt("age");
-                Character sex = request.getData().getString("sex").charAt(0);
-                String ville = request.getData().getString("city");
-                try {
-                    if (age != null) {
-                        j.setAge(request.getData().getInt("age"));
-                    }                  
-                    if (sex != null) {
-                        j.setSexe(request.getData().getString("sex").charAt(0));
-                    }
-                    if (ville != null){
-                        j.setVille(request.getData().getString("city"));
-                    }
-                } catch (Exception ex) {
-                    System.out.println("looser t'as pas réussi" + ex);
-                }
-                
-            }
-            daoJoueur.update(j);
-        }
+    private void update() {
+        
     }
   
 }

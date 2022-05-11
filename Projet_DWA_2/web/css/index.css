@@ -41,9 +41,7 @@ body {
     color: #0084d6;
     margin-left: 5px;
     height: 100%;
-    font-size: 0.9rem;
-    text-align: center;
-    overflow: auto;
+    font-size: 1.2rem;
 }
 #header button:hover {
     background-color: #0084d6ff;
@@ -112,24 +110,6 @@ body {
 #main-content .info div, #main-content .data div {
     margin-right: 3%;
     white-space: nowrap;
-}
-#main-content .profile button {
-    background-color: #0084d600;
-    border: solid 2px #0084d6;
-    border-radius: 20px;
-    color: #0084d6;
-    margin-right: 10px;
-    margin-top: 3%;
-    height: 15%;
-    font-size: 1.2rem;
-    
-}
-#main-content .profile button:hover {
-    background-color: #0084d6ff;
-    border: solid 2px #0084d6;
-    border-radius: 20px;
-    color: #ffffff;
-    margin-left: 5px;
 }
 #main-content .game {
     display: grid;
@@ -336,7 +316,6 @@ body {
     margin-bottom: 5%;
     width: 90%;
     height: 100%;
-    font-size: 1.3rem;
 }
 #popup .auth .content input {
     margin-bottom: 5%;
@@ -344,8 +323,8 @@ body {
     border: solid 2px #0084d6;
     border-radius: 5px;
     color: #111111;
-    height: 8%;
-    font-size: 1.1rem;
+    height: 30%;
+    font-size: 1.2rem;
 }
 #popup .auth .content input#password {
     margin-bottom: 5%;
@@ -353,7 +332,7 @@ body {
     border: solid 2px #0084d6;
     border-radius: 5px;
     color: #111111;
-    height: 8%;
+    height: 30%;
     font-size: 1.2rem;
 }
 #popup .auth .content button {
@@ -362,7 +341,7 @@ body {
     border-radius: 20px;
     color: #0084d6;
     margin-left: 5px;
-    height: 15%;
+    height: 50%;
     font-size: 1.2rem;
 }
 #popup .auth .content button:hover {
@@ -381,7 +360,7 @@ body {
     grid-column: 1;
     grid-row: 3;
     width: 100%;
-    height: fit-content;
+    height: 100%;
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -392,7 +371,7 @@ body {
     border-radius: 20px;
     color: #0084d6;
     width: fit-content;
-    height: fit-content;
+    height: 90%;
     overflow: visible;
     font-size: 1.5rem;
     margin-top: 10%;
@@ -412,7 +391,7 @@ body {
 #popup .list {
     display: flex;
     flex-direction: column;
-    height: fit-content;
+    height: 100%;
     width: 100%;
 }
 #popup .user {

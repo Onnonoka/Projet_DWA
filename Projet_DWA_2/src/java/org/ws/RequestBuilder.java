@@ -21,6 +21,8 @@ public class RequestBuilder {
     public static final int TIMED_OUT = -900;
     public static final int USER_DISCONNECTED = -20;
     
+    public static final int GAME_WRONG_PLAYER = -13;
+    
     public static final int INFO_WRONG_USERNAME = -3;
     
     public static final int AUTH_USERNAME_ALREADY_USED = -2;
@@ -43,7 +45,8 @@ public class RequestBuilder {
     
     public static final int GAME_DATA = 12;
     public static final int GAME_LUNCH_DICE = 13;
-    public static final int GAME_END_TURN = 14;
+    public static final int GAME_END_ROLL = 14;
+    
     
     private String message;
     
@@ -134,16 +137,18 @@ public class RequestBuilder {
                 jsonDataMessage.put("usernames", jsonArrayMessage);
                 jsonReplyMessage.put("data", jsonDataMessage);
                 break;
-            case AUTH_UPDATE : 
             case GAME_NEW_GAME :
             case GAME_STARTING :
             case GAME_START :
             case GAME_CANCEL :
             case GAME_DATA :
+            case GAME_LUNCH_DICE :
+            case GAME_END_ROLL :
                 jsonReplyMessage.put("data", data);
                 break;
-            case AUTH_WRONG_CREDENTIALS:
-            case AUTH_USERNAME_ALREADY_USED:
+            case AUTH_WRONG_CREDENTIALS :
+            case AUTH_USERNAME_ALREADY_USED :
+            case GAME_WRONG_PLAYER :
                 break;
             case UNDEFINED_CODE:
             default :

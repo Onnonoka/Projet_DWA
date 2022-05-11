@@ -49,7 +49,7 @@ class Main {
     addProfileTab(profile) {
         let tab = new ProfileTab(this.model, profile);
         this.tabs.push(tab);
-        this.tabsTitle.push(profile.pseudo === this.model.userData.username? "Profil" : profile.pseudo);
+        this.tabsTitle.push(profile.pseudo === this.model.userData.username? "Profile" : profile.pseudo);
         this.update();
     }
 

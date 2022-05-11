@@ -63,7 +63,6 @@ class UsersList {
     }
 
     sendNewGameRequest() {
-        console.log("New game");
         new PlayerOrderPopup(this.model, [...this.selectedUser, this.model.userData.username]);
     }
 
