@@ -14,37 +14,57 @@ import org.json.JSONArray;
  *
  * @author fred2
  */
-public class GameLoad extends GameRound {
+public class GameOrder extends GameRound {
     
     private final int nbPlayer;
+    
+    private int firstPlayer;
+    
     private int numLance;
 
-    public GameLoad(int gameId, Map p, List po) {
-        super(gameId, Game.GAME_CHARGE);
+    public GameOrder(int gameId, Map p, List po) {
+        super(gameId, Game.GAME_ORDER);
         players = p;
         playerOrder = po;
-        token = 21;
-        nbPlayer = po.size();
-        turn = 1;
+        nbPlayer = players.size();
+        firstPlayer = -1;
         numLance = 0;
+    }
+
+    @Override
+    public void start() throws Exception {
+        sendGame();
+    }
+
+    @Override
+    public void newRoll(Session peer, JSONArray dices) throws Exception {
+        System.out.println("rollOrder");
+        if (players.get(peer).equals(playerOrder.get(currentPlayer))) {
+            GamePlayer gp = playerOrder.get(currentPlayer);
+            gp.rollOrder(dices.getInt(0), dices.getInt(1), dices.getInt(2), id, numLance);
+            sendRoll(dices);
+            numLance++;
+        } else {
+            sendWrongUser(peer);
+        }
     }
 
     @Override
     protected void endTurn() throws Exception {
         List<GamePlayer> rerollPlayer = new ArrayList();
-        DiceValue minRoll = null;
+        DiceValue maxRoll = null;
         boolean needReroll = false;
         
         for (GamePlayer gp : players.values()) {
-            if (minRoll == null) {
-                minRoll = gp.getLastRoll();
+            if (maxRoll == null) {
+                maxRoll = gp.getLastRoll();
                 rerollPlayer.add(gp);
-            } else if (gp.getLastRoll().equals(minRoll)) {
+            } else if (gp.getLastRoll().equals(maxRoll)) {
                 rerollPlayer.add(gp);
                 needReroll = true;
-            } else if (minRoll.compare(gp.getLastRoll())) {
+            } else if (gp.getLastRoll().compare(maxRoll)) {
                 rerollPlayer.clear();
-                minRoll = gp.getLastRoll();
+                maxRoll = gp.getLastRoll();
                 rerollPlayer.add(gp);
                 needReroll = false;
             }
@@ -56,65 +76,39 @@ public class GameLoad extends GameRound {
                 playerOrder.add(player);
             }
         } else {
-            currentPlayer = 0;
             while(playerOrder.size() > nbPlayer) {
                 playerOrder.remove(playerOrder.size() - 1);
             }
             deliverToken();
             turn++;
         }
-        
-    }
-    
-    @Override
-    public void newRoll(Session peer, JSONArray dices) throws Exception {
-        if (players.get(peer).equals(playerOrder.get(currentPlayer))) {
-            GamePlayer gp = playerOrder.get(currentPlayer);
-            gp.rollLoad(dices.getInt(0), dices.getInt(1), dices.getInt(2), id, numLance);
-            sendRoll(dices);
-            numLance++;
-        } else {
-            sendWrongUser(peer);
-        }
-    }
-
-    @Override
-    public void start() throws Exception { 
-        sendGame(RequestBuilder.GAME_START);
     }
 
     @Override
     protected void deliverToken() {
-        GamePlayer looser = null;
+        GamePlayer winner = null;
         DiceValue maxRoll = null;
         
         for (GamePlayer gp : players.values()) {
             if (maxRoll == null) {
-                looser = gp;
+                winner = gp;
                 maxRoll = gp.getLastRoll();
             } else if (gp.getLastRoll().compare(maxRoll)) {
                 maxRoll = gp.getLastRoll();
-            } else if (looser.getLastRoll().compare(gp.getLastRoll())) {
-                looser = gp;
-            }
-            
-            if (gp.getLastRoll().isNenette()) {
-                if (token >= 2) {
-                    gp.addToken(2);
-                    token -= 2;
-                }
+                winner = gp;
             }
         }
         
-        if (token >= maxRoll.getToken()) {
-            token -= maxRoll.getToken();
-            looser.addToken(maxRoll.getToken());
-        }
+        firstPlayer = playerOrder.indexOf(winner);
     }
 
     @Override
     protected boolean isEnded() {
-        return token == 0;
+        return firstPlayer != -1;
+    }
+    
+    protected int getFirstPlayer() {
+        return firstPlayer;
     }
     
 }

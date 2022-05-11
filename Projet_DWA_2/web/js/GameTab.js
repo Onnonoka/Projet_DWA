@@ -19,6 +19,7 @@ class GameTab {
     dicesSelected;
 
     message;
+    turn;
 
     constructor(model, players, gameId) {
         this.model = model;
@@ -31,6 +32,7 @@ class GameTab {
         this.dicesSelected = [false, false, false];
 
         this.message = "";
+        this.turn = 1;
     }
 
     update() {
@@ -44,9 +46,11 @@ class GameTab {
                 content += `<div class="player ${e.username === this.game.currentPlayer? "current" : ""}">
                     <div class="username">${e.username}</div>
                     <div class="token">${e.token}</div>
+                    <div class="lastTunr">${e.lastTurnToken}</div>
                 </div>`;
             });
             content += `</div><div class="center-token">Pot : ${this.game.token}</div>`;
+            content += `<div class="top"><div class="turn">Tour numéro : ${this.turn}</div><div="phase">Phase de ${this.game.gameStatus === Game.GAME_CHARGE? "charge" : "Decharge"}</div>`;
             content += `<div class="message">${this.message}</div>`;
             content += `<div class="dices">`;
             this.dicesSelected.forEach((e, i) => {
@@ -72,7 +76,7 @@ class GameTab {
             button.onclick = () => {
                 this.game.rollDice(...this.dicesSelected);
                 this.sendRoll();
-                if (this.game.gameStatus === Game.GAME_CHARGE) {
+                if (this.game.gameStatus !== Game.GAME_DECHARGE) {
                     this.sendEndRoll();
                 }
                 this.update();
@@ -107,16 +111,28 @@ class GameTab {
     }
 
     setGameData(data) {
+        if (this.turn !== data.turn) {
+            this.game.players.forEach(e => {
+                e.lastTurnToken = "";
+            });
+        }
+        this.turn = data.turn;
         this.game.currentPlayer = data.currentPlayer;
         this.game.token = data.remainToken;
         this.game.players.forEach(e => {
             const index = data.players.findIndex(el => {
                 return e.username === el.username;
             });
+            if (e.token <= data.players[index].token) {
+                e.lastTurnToken = `+${data.players[index].token - e.token}`;
+            } else if (e.token >= data.players[index].token) {
+                e.lastTurnToken = `-${data.players[index].token - e.token}`;
+            }
             e.token = data.players[index].token;
         });
         this.game.gameStatus = data.status;
         this.message = `A ${this.model.userData.username === this.game.currentPlayer? "toi" : this.game.currentPlayer} de jouer`;
+        
         this.update();
     }
 

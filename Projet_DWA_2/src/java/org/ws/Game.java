@@ -10,16 +10,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.Callable;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.websocket.Session;
 import org.donnees.Joueur;
-import org.donnees.LancerCharge;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -40,23 +37,19 @@ public class Game {
     private final int gameId;
     private int gameStatus;
     
-    private Map<Session, GamePlayer> players;
+    private final Map<Session, GamePlayer> players;
     
     private GameLoad loadPhase;
+    private GameOrder orderPhase;
+    private GameDump dumpPhase;
     
-    private List<GamePlayer> playerOrder;
-    
-    private int currentPlayer;
-    
-    private int gameToken;
+    private final List<GamePlayer> playerOrder;
     
     public Game(int id) {
         gameStatus = GAME_CREATING;
         gameId = id;
         players = new HashMap<>();
         playerOrder = new ArrayList();
-        currentPlayer = 0;
-        gameToken = 21;
     }
     
     public void addPlayer(Session s, Joueur j) {
@@ -157,6 +150,8 @@ public class Game {
         gameStatus = GAME_CHARGE;
 
         loadPhase = new GameLoad(gameId, players, playerOrder);
+        orderPhase = new GameOrder(gameId, players, playerOrder);
+        dumpPhase = new GameDump(gameId, players, playerOrder);
         loadPhase.start();
     }
     
@@ -165,16 +160,26 @@ public class Game {
             case GAME_CHARGE:
                 loadPhase.newRoll(peer, dices);
                 break;
+            case GAME_ORDER:
+                orderPhase.newRoll(peer, dices);
+                break;
         }
     }
 
-    
     public void endTurn(Session peer) throws Exception {
         switch(gameStatus) {
             case GAME_CHARGE:
                 loadPhase.endRoll(peer);
                 if (loadPhase.isEnded()) {
                     gameStatus = GAME_ORDER;
+                    orderPhase.start();
+                }
+                break;
+            case GAME_ORDER:
+                orderPhase.endRoll(peer);
+                if (orderPhase.isEnded()) {
+                    gameStatus = GAME_DECHARGE;
+                    dumpPhase.start();
                 }
                 break;
         }

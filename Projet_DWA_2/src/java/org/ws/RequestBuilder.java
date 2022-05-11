@@ -46,7 +46,13 @@ public class RequestBuilder {
     public static final int GAME_DATA = 12;
     public static final int GAME_LUNCH_DICE = 13;
     public static final int GAME_END_ROLL = 14;
+    public static final int GAME_END = 15;
     
+    public static final int REPLAY_NEW_REPLAY = 17;
+    
+    public static final int REPLAY_BACK = 18;
+    public static final int REPLAY_NEXT = 19;
+    public static final int REPLAY_DATA = 20;
     
     private String message;
     

@@ -25,10 +25,16 @@ public class DiceValue {
     public DiceValue(int dice1, int dice2, int dice3) {
         int[] values = {dice1, dice2, dice3};
         sort(values);
+        for(int i = 0; i < values.length / 2; i++)
+        {
+            int temp = values[i];
+            values[i] = values[values.length - i - 1];
+            values[values.length - i - 1] = temp;
+        }
         d1 = values[0];
         d2 = values[1];
         d3 = values[2];
-        code = String.valueOf(d1) + String.valueOf(d2) + String.valueOf(d3); 
+        code = String.valueOf(d1) + String.valueOf(d2) + String.valueOf(d3);
         setWeight();
     }
     
@@ -126,9 +132,9 @@ public class DiceValue {
     
     public boolean compare(DiceValue dv) {
         if (weight == 1 && dv.getWeight() == 1) {
-            return d1 > dv.getD1() || d2 > dv.getD2() || d3 > dv.getD3();
+            return d1 >= dv.getD1() && d2 >= dv.getD2() && d3 >= dv.getD3();
         }
-        return weight > dv.getWeight();
+        return weight >= dv.getWeight();
     }
     
     public boolean isNenette() {

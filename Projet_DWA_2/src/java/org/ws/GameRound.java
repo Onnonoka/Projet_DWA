@@ -23,11 +23,14 @@ public abstract class GameRound {
     protected List<GamePlayer> playerOrder;
     protected int currentPlayer;
     protected int token;
+    protected int turn;
 
     
     public GameRound(int gameId, int gameStatus) {
         id = gameId;
         status = gameStatus;
+        token = 0;
+        turn = 0;
     }
     
     public abstract void start() throws Exception;
@@ -46,6 +49,7 @@ public abstract class GameRound {
         jsonData.put("remainToken", token);
         jsonData.put("currentPlayer", playerOrder.get(currentPlayer).get().getPseudo());
         jsonData.put("status", status);
+        jsonData.put("turn", turn);
 
         for (Session peer : peers) {
             JSONObject singlePlayer = new JSONObject();
@@ -70,17 +74,9 @@ public abstract class GameRound {
         sendGame();
     }
     
-    public void newRoll(Session peer, JSONArray dices) throws Exception {
-        if (players.get(peer).equals(playerOrder.get(currentPlayer))) {
-            GamePlayer gp = playerOrder.get(currentPlayer);
-            gp.rollLoad(dices.getInt(0), dices.getInt(1), dices.getInt(2), id);
-            sendRoll(dices);
-        } else {
-            sendWrongUser(peer);
-        }
-    }
+    public abstract void newRoll(Session peer, JSONArray dices) throws Exception;
     
-    private void sendRoll(JSONArray dices) throws Exception {
+    protected void sendRoll(JSONArray dices) throws Exception {
         RequestBuilder request = new RequestBuilder();
         JSONObject jsonData = new JSONObject();
         Set<Session> peers = players.keySet();
@@ -109,9 +105,22 @@ public abstract class GameRound {
         }
     }
     
-    protected abstract void endRoll(Session peer)  throws Exception;
+    protected void endRoll(Session peer)  throws Exception {
+        if (players.get(peer).equals(playerOrder.get(currentPlayer))) {
+            currentPlayer++;
+            sendEndRoll();
+            if (currentPlayer >= playerOrder.size()) {
+                endTurn();
+            }
+            if (!isEnded()) {
+                sendGame();
+            }
+        } else {
+            sendWrongUser(peer);
+        }
+    }
     
-    protected abstract void endRound()  throws Exception;
+    protected abstract void endTurn()  throws Exception;
     
     protected abstract void deliverToken();
     

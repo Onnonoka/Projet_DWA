@@ -29,7 +29,8 @@ public class GamesManager {
     
     public GamesManager(AuthManager am) {
         DAO_Partie daoPartie = new DAO_Partie();
-        nextAvailableId = daoPartie.findAll().size();
+        nextAvailableId = daoPartie.findAll().size();               // A refaire!! Ne prend pas en compte les parties Annulé
+                                                                                       // Il faut récup l'indice le plus élevé et non la taille du tableau
         games = new HashMap();
         authManager = am;
     }
