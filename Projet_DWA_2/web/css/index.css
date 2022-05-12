@@ -18,7 +18,7 @@ body {
     grid-template-columns: 80% auto;
     grid-template-rows: 5% auto;
     height: 100vh;
-    overflow: hidden;
+    
 }
 
 #header {
@@ -94,42 +94,55 @@ body {
     background-color: #ffffff;
     padding: 2%;
 }
+#main-content hr{
+    border: 2px solid #D3D3D3;
+    border-radius: 5px;
+    width: 90%;
+    margin-top: 40px;
+}
+#main-content .profile .tetepseudo{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
 #main-content .pseudo {
     font-size: 4rem;
-    color: #0084d6;
+    color: #2F4F4F;
+    font-style: italic;
+    margin-right: 5%;
+}
+#main-content .profile button {
+    width: fit-content;
+    height: 40px;
+    border: none;
+    outline: none;
+    background: #D3D3D3;
+    border-radius: 10px;
+    cursor: pointer;
+}
+#main-content .profile button:hover {
+    background: #A9A9A9;
+    color: #ffffff;
 }
 #main-content .info, #main-content .data {
-    margin-top: 2%;
-    display: flex;
+    margin-top: 3%;
+    display: block;
     flex-wrap: wrap;
-    flex-direction: row;
+    flex-direction: column;
     font-size: 2rem;
+}
+#main-content .info {
+    line-height: 3.5rem;
+    margin-left: 5%
 }
 #main-content .data {
     font-size: 1rem;
     white-space: wrap;
+    line-height: 3rem;
+    margin-left: 5%
 }
 #main-content .info div, #main-content .data div {
-    margin-right: 3%;
     white-space: nowrap;
-}
-#main-content .profile button {
-    background-color: #0084d600;
-    border: solid 2px #0084d6;
-    border-radius: 20px;
-    color: #0084d6;
-    margin-right: 10px;
-    margin-top: 3%;
-    height: 15%;
-    font-size: 1.2rem;
-    
-}
-#main-content .profile button:hover {
-    background-color: #0084d6ff;
-    border: solid 2px #0084d6;
-    border-radius: 20px;
-    color: #ffffff;
-    margin-left: 5px;
 }
 #main-content .game {
     display: grid;
