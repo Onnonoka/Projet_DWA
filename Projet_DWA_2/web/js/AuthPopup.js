@@ -15,22 +15,26 @@ class AuthPopup {
         this.error = error;
         this.container = document.getElementById("popup");
         this.container.innerHTML = "";
-        this.container.style.display = "grid";
+        this.container.style.display = "block";
         this.update();
     }
 
     update() {
         let content = `<div class="auth">`;
         if (this.requestType === RequestBuilder.AUTH_REGISTER) {
-            content += `<div class="title">S'inscrire</div>`;
+            content += `<div class="form">`;
+            content += `<h2>S'inscrire<h2>`;
         } else {
-            content += `<div class="title">Connexion</div>`;
+            content += `<div class="form">`;
+            content += `<h2>Connexion<h2>`;
         }
-        content += `<div class="content">`;
-        content += "Nom d'utilisateur : ";
-        content += `<input id="username" />`;
-        content += "Mot de passe : ";
-        content += `<input id="password" type="password" />`;
+        content += `<div class="form-element">`;
+        content += `<label for="username">Nom d'utilisateur</label>`;
+        content += `<input type="text" id="username" placeholder="nom de compte"/>`;
+        content += `</div>`;
+        content += `<div class="form-element">`;
+        content += `<label for="password">Mot de passe</label>`;
+        content += `<input type="text" id="password" placeholder="mot de passe"/>`;
         if (this.error !== undefined) {
             if (this.error === RequestBuilder.TIMED_OUT) {
                 content += `<span class="error">Erreur de connexion le server ne repond pas.</span>`;
@@ -40,10 +44,23 @@ class AuthPopup {
                 content += `<span class="error">Erreur d'enregistrement le nom d'utilisateur ou le mot de passe est incorrect.</span>`;
             }
         }
+        content += `</div>`;
         if (this.requestType === RequestBuilder.AUTH_REGISTER) {
+            content += `<div class="form-element">`;
+            content += `<label for="ville">Ville</label>`;
+            content += `<input type="text" id="ville" placeholder="ville"/>`;
+            content += `</div>`;
+            content += `<div class="form-element">`;
+            content += `<label for="sexe">Sexe</label>`;
+            content += `<input type="text" id="ville" placeholder="H/F"/>`;
+            content += `</div>`;
+            content += `<div class="form-element">`;
             content += `<button id="sendButton">S'inscrire</button>`;
+            content += `</div>`;
         } else {
+            content += `<div class="form-element">`;
             content += `<button id="sendButton">Connexion</button>`;
+            content += `</div>`;
         }
         content += `</div>`;
         content += `</div>`;

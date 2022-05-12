@@ -55,7 +55,9 @@ public abstract class DAO<D> {
      * @param data the modified object whose content is to be updated.
      */
     public void update(D data) {
+        this.entityTransaction.begin();
         entityManager.merge( data );
+        this.entityTransaction.commit();
     }
 
     /**
@@ -63,7 +65,9 @@ public abstract class DAO<D> {
      * @param data the object to delete.
      */
     public void delete(D data) {
+        this.entityTransaction.begin();
         entityManager.remove( data );
+        this.entityTransaction.commit();
     }
     
     /**

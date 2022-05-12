@@ -39,6 +39,9 @@ public class ws421 {
                 case RequestBuilder.AUTH_REGISTER :
                     authManager.register(peer, request);
                     break;
+                case RequestBuilder.AUTH_UPDATE :
+                    authManager.update(peer, request);
+                    break;
                 case RequestBuilder.INFO_GET_PROFILE:
                     authManager.getUserInfo(peer, request);
                     break;
