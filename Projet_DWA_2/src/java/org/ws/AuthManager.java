@@ -75,7 +75,11 @@ public class AuthManager {
         RequestBuilder reply = new RequestBuilder();
         try {
             DAO_Joueur daoJoueur = new DAO_Joueur();
-            Joueur player = request.getPlayer();
+            Joueur player = new Joueur(request.getData().getString("username"));
+            player.setMdp(request.getData().getString("password"));
+            player.setSexe(request.getData().getString("sex").charAt(0));
+            player.setVille(request.getData().getString("city"));
+            player.setAge(request.getData().getInt("age"));
             daoJoueur.create(player);
             reply.setData(RequestBuilder.AUTH_REGISTER);
             System.out.println("NEW USER ADDED");
@@ -131,20 +135,20 @@ public class AuthManager {
     public void update(Session peer, RequestBuilder request) throws Exception {
         DAO_Joueur daoJoueur = new DAO_Joueur();
         if (loggedPlayer.containsKey(peer)) {
-            Joueur j = daoJoueur.find(request.getUsername());
+            Joueur j = daoJoueur.find(request.getData().getString("username"));
             if (j != null) {
                 Integer age = request.getData().getInt("age");
                 Character sex = request.getData().getString("sex").charAt(0);
                 String ville = request.getData().getString("city");
                 try {
                     if (age != null) {
-                        j.setAge(request.getData().getInt("age"));
+                        j.setAge(age);
                     }                  
                     if (sex != null) {
-                        j.setSexe(request.getData().getString("sex").charAt(0));
+                        j.setSexe(sex);
                     }
                     if (ville != null){
-                        j.setVille(request.getData().getString("city"));
+                        j.setVille(ville);
                     }
                 } catch (Exception ex) {
                     System.out.println("looser t'as pas réussi" + ex);
