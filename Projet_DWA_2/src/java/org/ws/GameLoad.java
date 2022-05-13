@@ -18,16 +18,17 @@ public class GameLoad extends GameRound {
     
     private final int nbPlayer;
     private int numLance;
+    private final GameOrder nextPhase;
 
     public GameLoad(int gameId, GameOrder next, Map p, List po) {
-        super(gameId, next);
+        super(gameId);
         players = p;
         playerOrder = po;
         token = 21;
         nbPlayer = po.size();
         turn = 1;
         numLance = 0;
-        nbRollPerTurn = 1;
+        nextPhase = next;
     }
 
     @Override
@@ -127,6 +128,12 @@ public class GameLoad extends GameRound {
     @Override
     protected boolean isEnded() {
         return token == 0;
+    }
+
+    @Override
+    protected void endPhase() throws Exception {
+        status = Game.ROUND_ENDED;
+        nextPhase.start();
     }
     
 }

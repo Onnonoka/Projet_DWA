@@ -166,7 +166,6 @@ public class Game {
             orderPhase.newRoll(peer, dices);
         } else if (dumpPhase.getStatus() != ROUND_ENDED) {
             gameStatus = GAME_DECHARGE;
-            dumpPhase.setFirstPlayer(orderPhase.getFirstPlayer());
             dumpPhase.newRoll(peer, dices);
         } else {
             gameStatus = GAME_END;

@@ -26,7 +26,7 @@ public class GameDump extends GameRound {
     private int nbPlayerPlayTurn;
     
     public GameDump(int gameId, Map p, List po) {
-        super(gameId, null);
+        super(gameId);
         players = p;
         playerOrder = po;
         token = 0;
@@ -37,8 +37,6 @@ public class GameDump extends GameRound {
         currentReroll = 0;
         firstPlayerTurn = true;
         nbPlayerPlayTurn = 0;
-        nbRollPerTurn = 3;
-        
     }
 
     @Override
@@ -54,8 +52,10 @@ public class GameDump extends GameRound {
             gp.rollDump(dices.getInt(0), dices.getInt(1), dices.getInt(2), id, numLance);
             sendRoll(dices);
             numLance++;
-            if (currentReroll < 3) {
-                currentReroll++;
+            currentReroll++;
+            System.out.println("Condition 2 = " + (currentReroll >= turnReroll && !firstPlayerTurn));
+            if ((currentReroll >= 3 && firstPlayerTurn) || (currentReroll >= turnReroll && !firstPlayerTurn) ) {
+                endRoll(peer);
             }
         } else {
             sendWrongUser(peer);
@@ -130,6 +130,9 @@ public class GameDump extends GameRound {
         if (winner.getToken() >= winner.getLastRoll().getToken()) {
             winner.removeToken(winner.getLastRoll().getToken());
             looser.addToken(winner.getLastRoll().getToken());
+        } else {
+            winner.removeToken(winner.getToken());
+            looser.addToken(winner.getToken());
         }
     }
 
@@ -143,6 +146,11 @@ public class GameDump extends GameRound {
     
     public void setFirstPlayer(int first) {
         currentPlayer = first;
+    }
+
+    @Override
+    protected void endPhase() throws Exception {
+        status = Game.ROUND_ENDED;
     }
     
     

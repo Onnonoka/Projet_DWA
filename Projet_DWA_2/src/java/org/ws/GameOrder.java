@@ -21,14 +21,17 @@ public class GameOrder extends GameRound {
     private int firstPlayer;
     
     private int numLance;
+    
+    private final GameDump nextPhase;
 
     public GameOrder(int gameId, GameDump next, Map p, List po) {
-        super(gameId, next);
+        super(gameId);
         players = p;
         playerOrder = po;
         nbPlayer = players.size();
         firstPlayer = -1;
         numLance = 0;
+        nextPhase = next;
     }
 
     @Override
@@ -112,8 +115,11 @@ public class GameOrder extends GameRound {
         return firstPlayer != -1;
     }
     
-    protected int getFirstPlayer() {
-        return firstPlayer;
+    @Override
+    public void endPhase() throws Exception {
+        status = Game.ROUND_ENDED;
+        nextPhase.setFirstPlayer(firstPlayer);
+        nextPhase.start();
     }
     
 }

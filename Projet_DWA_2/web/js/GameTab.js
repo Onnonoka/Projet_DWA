@@ -122,7 +122,7 @@ class GameTab {
             if (e.token < data.players[index].token) {
                 e.lastTurnToken = `+${data.players[index].token - e.token}`;
             } else if (e.token > data.players[index].token) {
-                e.lastTurnToken = `-${data.players[index].token - e.token}`;
+                e.lastTurnToken = `${data.players[index].token - e.token}`;
             }
             e.token = data.players[index].token;
         });
