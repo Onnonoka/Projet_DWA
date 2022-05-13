@@ -23,6 +23,8 @@ class Game {
 
     nbRoll;
 
+    nbRollTurn;
+
     gameStatus;
 
     constructor(players) {
@@ -38,12 +40,13 @@ class Game {
         this.turn = 0;
         this.nbRoll = 0;
         this.gameStatus = Game.GAME_CHECKING;
+        this.nbRollTurn = 1;
     }
 
     rollDice(roll1, roll2, roll3) {
         const rolls = [roll1, roll2, roll3];
         this.dices = this.dices.map((e, i) => {
-            return rolls[i] || this.nbRoll === 0? Math.floor(Math.random() * 6  + 1) : e;
+            return !rolls[i] || this.nbRoll === 0? Math.floor(Math.random() * 6  + 1) : e;
         });
         this.nbRoll++;
     }

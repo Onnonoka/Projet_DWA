@@ -47,6 +47,7 @@ public class RequestBuilder {
     public static final int GAME_LUNCH_DICE = 13;
     public static final int GAME_END_ROLL = 14;
     public static final int GAME_END = 15;
+    public static final int GAME_DICE_SELECT = 16;
     
     public static final int REPLAY_NEW_REPLAY = 17;
     

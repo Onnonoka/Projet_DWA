@@ -22,8 +22,8 @@ public class GameOrder extends GameRound {
     
     private int numLance;
 
-    public GameOrder(int gameId, Map p, List po) {
-        super(gameId, Game.GAME_ORDER);
+    public GameOrder(int gameId, GameDump next, Map p, List po) {
+        super(gameId, next);
         players = p;
         playerOrder = po;
         nbPlayer = players.size();
@@ -33,6 +33,7 @@ public class GameOrder extends GameRound {
 
     @Override
     public void start() throws Exception {
+        status = Game.GAME_ORDER;
         sendGame();
     }
 
@@ -44,6 +45,7 @@ public class GameOrder extends GameRound {
             gp.rollOrder(dices.getInt(0), dices.getInt(1), dices.getInt(2), id, numLance);
             sendRoll(dices);
             numLance++;
+            endRoll(peer);
         } else {
             sendWrongUser(peer);
         }
@@ -81,6 +83,9 @@ public class GameOrder extends GameRound {
             }
             deliverToken();
             turn++;
+        }
+        if (isEnded()) {
+            endPhase();
         }
     }
 

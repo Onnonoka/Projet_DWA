@@ -20,12 +20,13 @@ public class GameDump extends GameRound {
     
     private int numLance;
     private int turnReroll;
+    private int currentReroll;
     private boolean firstPlayerTurn;
     private int nbPlayer;
     private int nbPlayerPlayTurn;
     
     public GameDump(int gameId, Map p, List po) {
-        super(gameId, Game.GAME_DECHARGE);
+        super(gameId, null);
         players = p;
         playerOrder = po;
         token = 0;
@@ -33,12 +34,16 @@ public class GameDump extends GameRound {
         turn = 1;
         numLance = 0;
         turnReroll = 0;
+        currentReroll = 0;
         firstPlayerTurn = true;
         nbPlayerPlayTurn = 0;
+        nbRollPerTurn = 3;
+        
     }
 
     @Override
     public void start() throws Exception {
+        status = Game.GAME_DECHARGE;
         sendGame();
     }
 
@@ -49,8 +54,8 @@ public class GameDump extends GameRound {
             gp.rollDump(dices.getInt(0), dices.getInt(1), dices.getInt(2), id, numLance);
             sendRoll(dices);
             numLance++;
-            if (firstPlayerTurn) {
-                turnReroll++;
+            if (currentReroll < 3) {
+                currentReroll++;
             }
         } else {
             sendWrongUser(peer);
@@ -61,7 +66,11 @@ public class GameDump extends GameRound {
     protected void endRoll(Session peer) throws Exception {
         if (players.get(peer).equals(playerOrder.get(currentPlayer))) {
             currentPlayer++;
-            firstPlayerTurn = false;
+            if (firstPlayerTurn) {
+                turnReroll = currentReroll;
+                firstPlayerTurn = false;
+            }
+            currentReroll = 0;
             nbPlayerPlayTurn++;
             sendEndRoll();
             if (currentPlayer >= playerOrder.size()) {
@@ -92,8 +101,14 @@ public class GameDump extends GameRound {
 
         currentPlayer = playerOrder.indexOf(looser);
         nbPlayerPlayTurn = 0;
+        turnReroll = 0;
         deliverToken();
         turn++;
+        firstPlayerTurn = true;
+        currentReroll = 0;
+        if (isEnded()) {
+            endPhase();
+        }
     }
 
     @Override
@@ -120,8 +135,7 @@ public class GameDump extends GameRound {
 
     @Override
     protected boolean isEnded() {
-        List<GamePlayer> p = (List<GamePlayer>) players.values();
-        Optional<GamePlayer> optional = p.stream()
+        Optional<GamePlayer> optional = players.values().stream()
                                    .filter(x -> x.getToken() == 0)
                                    .findFirst();
         return optional.isPresent();

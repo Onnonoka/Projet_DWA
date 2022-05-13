@@ -33,6 +33,8 @@ public class Game {
     public static final int GAME_ORDER = 2;
     public static final int GAME_DECHARGE = 3;
     public static final int GAME_END = 4;
+    public static final int ROUND_WAITING = 5;
+    public static final int ROUND_ENDED = 6;
 
     private final int gameId;
     private int gameStatus;
@@ -149,39 +151,31 @@ public class Game {
     private void lunchGame() throws Exception {
         gameStatus = GAME_CHARGE;
 
-        loadPhase = new GameLoad(gameId, players, playerOrder);
-        orderPhase = new GameOrder(gameId, players, playerOrder);
         dumpPhase = new GameDump(gameId, players, playerOrder);
+        orderPhase = new GameOrder(gameId, dumpPhase, players, playerOrder);
+        loadPhase = new GameLoad(gameId, orderPhase, players, playerOrder);
         loadPhase.start();
     }
     
     public void newRoll(Session peer, JSONArray dices) throws Exception {        
-        switch(gameStatus) {
-            case GAME_CHARGE:
-                loadPhase.newRoll(peer, dices);
-                break;
-            case GAME_ORDER:
-                orderPhase.newRoll(peer, dices);
-                break;
+        if (loadPhase.getStatus() != ROUND_ENDED) {
+            gameStatus = GAME_CHARGE;
+            loadPhase.newRoll(peer, dices);
+        } else if (orderPhase.getStatus() != ROUND_ENDED) {
+        gameStatus = GAME_ORDER;
+            orderPhase.newRoll(peer, dices);
+        } else if (dumpPhase.getStatus() != ROUND_ENDED) {
+            gameStatus = GAME_DECHARGE;
+            dumpPhase.setFirstPlayer(orderPhase.getFirstPlayer());
+            dumpPhase.newRoll(peer, dices);
+        } else {
+            gameStatus = GAME_END;
         }
     }
 
     public void endTurn(Session peer) throws Exception {
-        switch(gameStatus) {
-            case GAME_CHARGE:
-                loadPhase.endRoll(peer);
-                if (loadPhase.isEnded()) {
-                    gameStatus = GAME_ORDER;
-                    orderPhase.start();
-                }
-                break;
-            case GAME_ORDER:
-                orderPhase.endRoll(peer);
-                if (orderPhase.isEnded()) {
-                    gameStatus = GAME_DECHARGE;
-                    dumpPhase.start();
-                }
-                break;
+        if (dumpPhase.getStatus() == GAME_DECHARGE) {
+            dumpPhase.endRoll(peer);
         }
     }
     

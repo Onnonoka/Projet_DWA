@@ -19,14 +19,15 @@ public class GameLoad extends GameRound {
     private final int nbPlayer;
     private int numLance;
 
-    public GameLoad(int gameId, Map p, List po) {
-        super(gameId, Game.GAME_CHARGE);
+    public GameLoad(int gameId, GameOrder next, Map p, List po) {
+        super(gameId, next);
         players = p;
         playerOrder = po;
         token = 21;
         nbPlayer = po.size();
         turn = 1;
         numLance = 0;
+        nbRollPerTurn = 1;
     }
 
     @Override
@@ -63,6 +64,9 @@ public class GameLoad extends GameRound {
             deliverToken();
             turn++;
         }
+        if (isEnded()) {
+            endPhase();
+        }
         
     }
     
@@ -73,6 +77,7 @@ public class GameLoad extends GameRound {
             gp.rollLoad(dices.getInt(0), dices.getInt(1), dices.getInt(2), id, numLance);
             sendRoll(dices);
             numLance++;
+            endRoll(peer);
         } else {
             sendWrongUser(peer);
         }
@@ -80,6 +85,7 @@ public class GameLoad extends GameRound {
 
     @Override
     public void start() throws Exception { 
+        status = Game.GAME_CHARGE;
         sendGame(RequestBuilder.GAME_START);
     }
 
@@ -102,6 +108,9 @@ public class GameLoad extends GameRound {
                 if (token >= 2) {
                     gp.addToken(2);
                     token -= 2;
+                } else {
+                    gp.addToken(token);
+                    token = 0;
                 }
             }
         }
@@ -109,6 +118,9 @@ public class GameLoad extends GameRound {
         if (token >= maxRoll.getToken()) {
             token -= maxRoll.getToken();
             looser.addToken(maxRoll.getToken());
+        } else {
+            looser.addToken(token);
+            token = 0;
         }
     }
 

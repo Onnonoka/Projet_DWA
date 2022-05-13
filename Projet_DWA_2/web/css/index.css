@@ -185,6 +185,10 @@ body {
     margin-right: 2.5%;
     margin-left: 2.5%;
 }
+#main-content .game .dices .dice.selected {
+    color: #ffffff;
+    background-color: #0084d6;
+}
 #main-content .game .bottom {
     grid-column: 2;
     grid-row: 5;

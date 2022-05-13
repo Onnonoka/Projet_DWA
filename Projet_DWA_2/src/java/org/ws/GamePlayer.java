@@ -90,11 +90,10 @@ public class GamePlayer {
     }
     
     public void rollOrder(int d1, int d2, int d3, int gameId, int numLance) {
-        lastRoll = new DiceValue(d1, d2, d3);
         DAO_ValDe daoValDe = new DAO_ValDe();
         ValDe valDe  = new ValDe();
         String codeDe = String.valueOf(d1) + String.valueOf(d2) + String.valueOf(d3); 
-        LancerCharge lc = new LancerCharge(gameId, joueur.getPseudo(), numLance);
+        LanceOrdre lo = new LanceOrdre(joueur.getPseudo(), gameId);
         try {
             valDe.setCodeDe(codeDe);
             valDe.setVal1(d1);
@@ -106,12 +105,29 @@ public class GamePlayer {
             valDe = daoValDe.find(codeDe);
             System.out.println("Got");
         }
-        lc.setCodeDe(valDe);
-        lancerCharge.add(lc);
+        lo.setCodeDe(valDe);
+        lanceOrdre.add(lo);
         lastRoll = new DiceValue(d1, d2, d3);
     }
     
     public void rollDump(int d1, int d2, int d3, int gameId, int numLance) {
+        DAO_ValDe daoValDe = new DAO_ValDe();
+        ValDe valDe  = new ValDe();
+        String codeDe = String.valueOf(d1) + String.valueOf(d2) + String.valueOf(d3); 
+        LancerDecharge ld = new LancerDecharge(gameId, joueur.getPseudo(), numLance, 0);
+        try {
+            valDe.setCodeDe(codeDe);
+            valDe.setVal1(d1);
+            valDe.setVal2(d2);
+            valDe.setVal3(d3);
+            daoValDe.create(valDe);
+            System.out.println("Created");
+        } catch(Exception e) {
+            valDe = daoValDe.find(codeDe);
+            System.out.println("Got");
+        }
+        ld.setCodeDe(valDe);
+        lancerDecharge.add(ld);
         lastRoll = new DiceValue(d1, d2, d3);
         
     }

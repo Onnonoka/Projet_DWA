@@ -76,21 +76,17 @@ class GameTab {
             button.onclick = () => {
                 this.game.rollDice(...this.dicesSelected);
                 this.sendRoll();
-                if (this.game.gameStatus !== Game.GAME_DECHARGE) {
+                this.update();
+            }
+        }
+        if (this.game.gameStatus === Game.GAME_DECHARGE && this.model.userData.username === this.game.currentPlayer && this.game.nbRoll > 0) {
+            button = document.getElementById("end");
+            if (button !== null) {
+                button.onclick = () => {
                     this.sendEndRoll();
+                    this.update();
                 }
-                this.update();
             }
-        }
-        button = document.getElementById("end");
-        if (button !== null) {
-            button.onclick = () => {
-                this.game.rollDice(...this.dicesSelected);
-                this.sendEndRoll();
-                this.update();
-            }
-        }
-        if (this.game.gameStatus === Game.GAME_DECHARGE && this.model.userData.username === this.game.currentPlayer) {
             this.dicesSelected.forEach((e, i) => {
                 button = document.getElementById("dice-" + i);
                 button.onclick = () => {
@@ -123,9 +119,9 @@ class GameTab {
             const index = data.players.findIndex(el => {
                 return e.username === el.username;
             });
-            if (e.token <= data.players[index].token) {
+            if (e.token < data.players[index].token) {
                 e.lastTurnToken = `+${data.players[index].token - e.token}`;
-            } else if (e.token >= data.players[index].token) {
+            } else if (e.token > data.players[index].token) {
                 e.lastTurnToken = `-${data.players[index].token - e.token}`;
             }
             e.token = data.players[index].token;

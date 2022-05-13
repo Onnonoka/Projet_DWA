@@ -132,9 +132,9 @@ public class DiceValue {
     
     public boolean compare(DiceValue dv) {
         if (weight == 1 && dv.getWeight() == 1) {
-            return d1 >= dv.getD1() && d2 >= dv.getD2() && d3 >= dv.getD3();
+            return d1 > dv.getD1() && d2 > dv.getD2() && d3 > dv.getD3();
         }
-        return weight >= dv.getWeight();
+        return weight > dv.getWeight();
     }
     
     public boolean isNenette() {

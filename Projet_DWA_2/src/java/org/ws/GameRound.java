@@ -16,21 +16,25 @@ import org.json.JSONObject;
  * @author fred2
  */
 public abstract class GameRound {
+    
     protected final int id;
-    protected final int status;
+    protected final GameRound nextPhase;
+    protected int status;
     
     protected Map<Session, GamePlayer> players;
     protected List<GamePlayer> playerOrder;
     protected int currentPlayer;
     protected int token;
     protected int turn;
+    protected int nbRollPerTurn;
 
     
-    public GameRound(int gameId, int gameStatus) {
+    public GameRound(int gameId, GameRound next) {
         id = gameId;
-        status = gameStatus;
+        status = Game.ROUND_WAITING;
         token = 0;
         turn = 0;
+        nextPhase = next;
     }
     
     public abstract void start() throws Exception;
@@ -118,6 +122,15 @@ public abstract class GameRound {
         } else {
             sendWrongUser(peer);
         }
+    }
+    
+    public int getStatus() {
+        return status;
+    }
+    
+    protected void endPhase() throws Exception {
+        status = Game.ROUND_ENDED;
+        nextPhase.start();
     }
     
     protected abstract void endTurn()  throws Exception;
