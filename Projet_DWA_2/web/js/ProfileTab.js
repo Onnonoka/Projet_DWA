@@ -17,14 +17,20 @@ class ProfileTab {
         let content = "";
         content += `<div class="profile">
             <div class="tetepseudo">
-                <div class="pseudo">${this.player.pseudo}</div>
-                <div class="button">
+                <div class="pseudo">${this.player.pseudo}</div>`;
+        if (this.model.userData.username === this.player.pseudo){
+            content += `<div class="button">
                     ${ this.changeProfil ? '<button id="confirmProfil">Confirmer le changement</button>' : '<button id="modifProfil">Modifier le profil</button>'}
-                </div>
+                </div>`;
+        }
+        content += `    
             </div>
             <hr />
-            <div class="info">
-                <div>Mdp : ${this.changeProfil ? '<input type="text" id="MdpProfil" value=' + this.player.mdp + '>' : this.player.mdp}</div>
+            <div class="info">`;
+        if (this.model.userData.username === this.player.pseudo ){
+            content += `<div>Mdp : ${this.changeProfil ? '<input type="text" id="MdpProfil" minlenght="0" value=' + this.player.mdp + '>' : this.player.mdp}</div>`;
+        }
+        content += `
                 <div>Sexe : ${this.changeProfil ? '<input type="text" id="SexProfil" value=' + this.player.sexe + '>' : this.player.sexe}</div>
                 <div>Ville : ${this.changeProfil ? '<input type="text" id="VilleProfil" value=' + this.player.ville + '>' : this.player.ville}</div>
                 <div>Age : ${this.changeProfil ? '<input type="text" id="AgeProfil" value=' + this.player.age + '>' : this.player.age}</div>

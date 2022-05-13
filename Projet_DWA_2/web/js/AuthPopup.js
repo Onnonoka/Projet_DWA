@@ -34,7 +34,7 @@ class AuthPopup {
         content += `</div>`;
         content += `<div class="form-element">`;
         content += `<label for="password">Mot de passe</label>`;
-        content += `<input type="text" id="password" placeholder="mot de passe"/>`;
+        content += `<input type="password" id="password" name="password" placeholder="mot de passe"/>`;
         if (this.error !== undefined) {
             if (this.error === RequestBuilder.TIMED_OUT) {
                 content += `<span class="error">Erreur de connexion le server ne repond pas.</span>`;
@@ -51,8 +51,13 @@ class AuthPopup {
             content += `<input type="text" id="ville" placeholder="ville"/>`;
             content += `</div>`;
             content += `<div class="form-element">`;
-            content += `<label for="sexe">Sexe</label>`;
-            content += `<input type="text" id="ville" placeholder="H/F"/>`;
+            content += `<label for="sex">Sexe</label>`;
+            content += `<select name="sexe" id="sex">
+                            <option value="">--Choississez une option--</option>
+                            <option value="F">F</option>
+                            <option value="H">H</option>
+                            <option value="O">O</option>
+                        </select>`;
             content += `</div>`;
             content += `<div class="form-element">`;
             content += `<button id="sendButton">S'inscrire</button>`;
@@ -63,12 +68,37 @@ class AuthPopup {
             content += `</div>`;
         }
         content += `</div>`;
+        if (this.requestType === RequestBuilder.AUTH_REGISTER) {
+            
+            content += `<span id="loginButton">Connexion</span>`;
+        } else {
+            content += `<span id="registerButon">S'inscrire</span>`;
+        }
         content += `</div>`;
         this.container.innerHTML = content;
-        let button = document.getElementById("sendButton");
-        button.onclick = () => {this.sendRequest()};
+        this.updateEventListener();
     }
-
+    
+    updateEventListener() {
+        let button1 = document.getElementById("sendButton");
+        if (button1 !== null) {
+            button1.onclick = () => {
+                this.sendRequest();
+            }
+        }
+        
+         let button = document.getElementById("loginButton");
+        if (button !== null) {
+            button.onclick = () => {
+                new AuthPopup(this.model, RequestBuilder.AUTH_LOGIN);
+            };
+        }
+        button = document.getElementById("registerButon");
+        if (button !== null) {
+            button.onclick = () => {new AuthPopup(this.model, RequestBuilder.AUTH_REGISTER)};
+        }
+    }
+    
     sendRequest() {
         let username = document.getElementById("username").value;
         let password = document.getElementById("password").value;
