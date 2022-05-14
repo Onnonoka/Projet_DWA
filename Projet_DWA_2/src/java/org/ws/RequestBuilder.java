@@ -128,6 +128,7 @@ public class RequestBuilder {
             case AUTH_LOGIN :
             case INFO_GET_PROFILE:
                 jsonDataMessage.put("pseudo", player.getPseudo());
+                jsonDataMessage.put("mdp", player.getMdp());
                 jsonDataMessage.put("age", player.getAge());
                 jsonDataMessage.put("sexe", player.getSexe());
                 jsonDataMessage.put("ville", player.getVille());
@@ -144,6 +145,7 @@ public class RequestBuilder {
                 jsonDataMessage.put("usernames", jsonArrayMessage);
                 jsonReplyMessage.put("data", jsonDataMessage);
                 break;
+            case AUTH_UPDATE:
             case GAME_NEW_GAME :
             case GAME_STARTING :
             case GAME_START :

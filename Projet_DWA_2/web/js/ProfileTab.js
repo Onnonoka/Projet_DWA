@@ -5,6 +5,7 @@ class ProfileTab {
     model;
     container;
     player;
+    
 
     constructor(model, player) {
         this.model = model;
@@ -62,13 +63,14 @@ class ProfileTab {
                 this.sendNewInfo();
                 this.changeProfil = false;
                 this.update();
+                
             };
         }
     }
     
     sendNewInfo() {
         let username = this.player.pseudo;
-        //let password = document.getElementById("MdpProfil").value;
+        let password = document.getElementById("MdpProfil").value;
         let sex = document.getElementById("SexProfil").value;
         let city = document.getElementById("VilleProfil").value;
         let age = document.getElementById("AgeProfil").value;
@@ -78,10 +80,18 @@ class ProfileTab {
                 username: username,
                 city: city,
                 sex : sex,
-                age : age
+                age : age,
+                password: password
             }
         });
         this.model.ws.send(requestMessage);
+    }
+
+    GetNewInfo(data) {
+        this.player.mdp = data.password
+        this.player.sexe = data.sex;
+        this.player.ville = data.city;
+        this.player.age = data.age;
     }
 }
 

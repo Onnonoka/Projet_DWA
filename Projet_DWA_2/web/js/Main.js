@@ -64,6 +64,18 @@ class Main {
         }
         this.update();
     }
+    
+    getProfileTab(data) {
+    let tab;
+    console.log(this.tabs[0]);
+    this.tabs.forEach((element) => {
+      if ( element.player.pseudo === data) {
+        tab = element;
+      }
+    });
+    console.log(tab);
+    return tab;
+  }
 
     addGameTab(gameId, players) {
         let tab = new GameTab(this.model, players, gameId);

@@ -38,6 +38,9 @@ class Controler {
             case RequestBuilder.INFO_GET_PROFILE :
                 this.vue.main.addProfileTab(reply.data);
                 break;
+            case RequestBuilder.AUTH_UPDATE :
+                this.vue.main.getProfileTab(reply.data.username).GetNewInfo(reply.data);
+                break;
             case RequestBuilder.AUTH_WRONG_CREDENTIALS :
                 new AuthPopup(this.model, RequestBuilder.AUTH_LOGIN, RequestBuilder.AUTH_WRONG_CREDENTIALS);
                 this.model.loginStatus = Model.DISCONECTED;
@@ -75,7 +78,6 @@ class Controler {
                 this.vue.main.getGameTab(reply.data.id).end(reply.data);
         }
         this.vue.update();
-
     }
 
     wsOnClose(event) {
