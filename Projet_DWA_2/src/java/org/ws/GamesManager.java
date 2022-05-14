@@ -12,6 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.websocket.Session;
 import org.dao.DAO_Partie;
+import org.donnees.Partie;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -29,8 +30,14 @@ public class GamesManager {
     
     public GamesManager(AuthManager am) {
         DAO_Partie daoPartie = new DAO_Partie();
-        nextAvailableId = daoPartie.findAll().size();               // A refaire!! Ne prend pas en compte les parties Annulé
-                                                                                       // Il faut récup l'indice le plus élevé et non la taille du tableau
+        nextAvailableId = 0;
+        System.out.println(daoPartie.findAll().size());
+        for (Partie p : daoPartie.findAll()) {
+            if (p.getCodePartieINT() > nextAvailableId) {
+                nextAvailableId = p.getCodePartieINT();
+                nextAvailableId++;
+            }
+        }
         games = new HashMap();
         authManager = am;
     }
@@ -56,10 +63,9 @@ public class GamesManager {
             }
             game.startGame();
         }
-        
     }
     
-    public void playerReady(Session peer, RequestBuilder request) {
+    public void playerAccept(Session peer, RequestBuilder request) {
         int id = request.getData().getInt("id");
         games.get(id).setPlayerStatus(peer, GamePlayer.PLAYER_READY);
     }
@@ -72,11 +78,29 @@ public class GamesManager {
     public void playerLunchDice(Session peer, RequestBuilder request) throws Exception {
         int id = request.getData().getInt("id");
         games.get(id).newRoll(peer, request.getData().getJSONArray("dices"));
+        if (games.get(id).getStatus() == Game.GAME_END) {
+            games.get(id).store();
+            deleteUnusedGames();
+        }
     }
     
     public void playerEndTurn(Session peer, RequestBuilder request) throws Exception {
         int id = request.getData().getInt("id");
         games.get(id).endTurn(peer);
+        if (games.get(id).getStatus() == Game.GAME_END) {
+            games.get(id).store();
+            System.out.println("GAME STORED");
+            deleteUnusedGames();
+        }
+    }
+    
+    public void deleteUnusedGames() {
+        for (int id : games.keySet()) {
+            Game g = games.get(id);
+            if (g.getStatus() == Game.GAME_END || g.getStatus() == Game.GAME_ABORT) {
+                games.remove(id);
+            }
+        }
     }
     
 }

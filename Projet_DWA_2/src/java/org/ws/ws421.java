@@ -46,15 +46,15 @@ public class ws421 {
                     authManager.getUserInfo(peer, request);
                     break;
                 case RequestBuilder.INFO_GET_HISTORY : 
-                    
+                    authManager.getPlayerHistory(peer, request);
                     break;
                 case RequestBuilder.GAME_NEW_GAME :
                     gamesManager.createNewGame(peer, request);
                     break;
-                case RequestBuilder.GAME_READY :
-                    gamesManager.playerReady(peer, request);
+                case RequestBuilder.GAME_PLAYER_ACCEPT :
+                    gamesManager.playerAccept(peer, request);
                     break;
-                case RequestBuilder.GAME_NOT_READY :
+                case RequestBuilder.GAME_PLAYER_REFUSE :
                     gamesManager.playerRefuse(peer, request);
                     break;
                 case RequestBuilder.GAME_LUNCH_DICE :
@@ -62,6 +62,10 @@ public class ws421 {
                     break;
                 case RequestBuilder.GAME_END_ROLL :
                     gamesManager.playerEndTurn(peer, request);
+                    break;
+                case RequestBuilder.REPLAY_NEW_REPLAY :
+                    authManager.getReplay(peer, request);
+                    break;
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -37,9 +37,9 @@ public class RequestBuilder {
     public static final int INFO_PLAYER_LIST = 5;
     
     public static final int GAME_NEW_GAME = 6;
-    public static final int GAME_STARTING = 7;
-    public static final int GAME_READY = 8;
-    public static final int GAME_NOT_READY = 9;
+    public static final int GAME_PENDING = 7;
+    public static final int GAME_PLAYER_ACCEPT = 8;
+    public static final int GAME_PLAYER_REFUSE = 9;
     public static final int GAME_START = 10;
     public static final int GAME_CANCEL = 11;
     
@@ -147,13 +147,15 @@ public class RequestBuilder {
                 break;
             case AUTH_UPDATE:
             case GAME_NEW_GAME :
-            case GAME_STARTING :
+            case GAME_PENDING :
             case GAME_START :
             case GAME_CANCEL :
             case GAME_DATA :
             case GAME_LUNCH_DICE :
             case GAME_END_ROLL :
             case GAME_END :
+            case INFO_GET_HISTORY :
+            case REPLAY_DATA :
                 jsonReplyMessage.put("data", data);
                 break;
             case AUTH_WRONG_CREDENTIALS :

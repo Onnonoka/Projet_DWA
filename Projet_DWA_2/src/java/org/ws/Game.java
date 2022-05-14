@@ -6,6 +6,7 @@ package org.ws;
 
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,7 +17,9 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.websocket.Session;
+import org.dao.DAO_Partie;
 import org.donnees.Joueur;
+import org.donnees.Partie;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -36,6 +39,8 @@ public class Game {
     public static final int ROUND_WAITING = 5;
     public static final int ROUND_ENDED = 6;
 
+    private Partie partie;
+    
     private final int gameId;
     private int gameStatus;
     
@@ -52,10 +57,11 @@ public class Game {
         gameId = id;
         players = new HashMap<>();
         playerOrder = new ArrayList();
+        partie = new Partie(gameId);
     }
     
     public void addPlayer(Session s, Joueur j) {
-        GamePlayer gp = new GamePlayer(j);
+        GamePlayer gp = new GamePlayer(j, gameId);
         players.put(s, gp);
         playerOrder.add(gp);
     }
@@ -95,7 +101,7 @@ public class Game {
     }
     
     public void sendPlayerStatus() throws Exception {
-        sendPlayerStatus(RequestBuilder.GAME_STARTING);
+        sendPlayerStatus(RequestBuilder.GAME_PENDING);
     }
     
     public void abort() throws Exception {
@@ -150,6 +156,8 @@ public class Game {
     
     private void lunchGame() throws Exception {
         gameStatus = GAME_CHARGE;
+        
+        partie.setDateDeb(new Date());
 
         dumpPhase = new GameDump(gameId, players, playerOrder);
         orderPhase = new GameOrder(gameId, dumpPhase, players, playerOrder);
@@ -169,12 +177,30 @@ public class Game {
             dumpPhase.newRoll(peer, dices);
         } else {
             gameStatus = GAME_END;
+            partie.setDateFin(new Date());
         }
     }
 
     public void endTurn(Session peer) throws Exception {
         if (dumpPhase.getStatus() == GAME_DECHARGE) {
             dumpPhase.endRoll(peer);
+        }
+        if (dumpPhase.getStatus() == ROUND_ENDED) {
+            gameStatus = GAME_END;
+            partie.setDateFin(new Date());
+        }
+    }
+    
+    public int getStatus() {
+        return gameStatus;
+    }
+    
+    public void store() throws Exception {
+        DAO_Partie daoPartie = new DAO_Partie();
+        
+        daoPartie.create(partie);
+        for (GamePlayer gp : players.values()) {
+            gp.store();
         }
     }
     

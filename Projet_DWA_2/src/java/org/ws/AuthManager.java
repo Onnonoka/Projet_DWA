@@ -4,18 +4,27 @@
  */
 package org.ws;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.websocket.Session;
 import org.dao.DAO_Joueur;
+import org.dao.DAO_LanceOrdre;
+import org.dao.DAO_LancerCharge;
+import org.dao.DAO_LancerDecharge;
+import org.dao.DAO_Partie;
+import org.dao.DAO_Resultat;
+import org.dao.DAO_ValDe;
 import org.donnees.Joueur;
+import org.donnees.LanceOrdre;
+import org.donnees.LancerCharge;
+import org.donnees.LancerDecharge;
+import org.donnees.Partie;
+import org.donnees.Resultat;
+import org.donnees.ValDe;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
@@ -168,6 +177,122 @@ public class AuthManager {
             request.build();
             peer.getBasicRemote().sendText(request.getMessage());
         }
+    }
+    
+    public void getPlayerHistory(Session peer, RequestBuilder request) throws Exception {
+        String username = request.getData().getString("username");
+        System.out.println("USERNAME = " + username);
+        DAO_Partie daoPartie = new DAO_Partie();
+        DAO_Resultat daoResultat = new DAO_Resultat();
+        List<Resultat> resultats = daoResultat.getJoueurResultats(username);
+        JSONObject jsonData = new JSONObject();
+        JSONArray jsonArray = new JSONArray();
+        RequestBuilder reply = new RequestBuilder();
+        
+        System.out.println(resultats.size());
+        for (Resultat res : resultats) {
+            JSONObject singleData = new JSONObject();
+            System.out.println(res.getResultatPK().getCodePartieINT());
+            Partie p = daoPartie.find(res.getResultatPK().getCodePartie());
+            singleData.put("id", p.getCodePartieINT());
+            singleData.put("date", p.getDateDeb());
+            singleData.put("nbJetonCharge", res.getNbJetonChargeINT());
+            singleData.put("nbJetonDecharge", res.getNbJetonDechargeINT());
+            singleData.put("win", res.getNbJetonDechargeINT() == 0);
+            jsonArray.put(singleData);
+        }
+        jsonData.put("username", username);
+        jsonData.put("history", jsonArray);
+        reply.setData(RequestBuilder.INFO_GET_HISTORY, jsonData);
+        reply.build();
+        peer.getBasicRemote().sendText(reply.getMessage());
+    }
+    
+    public void getReplay(Session peer, RequestBuilder request) throws Exception {
+        DAO_Partie daoPartie = new DAO_Partie();
+        DAO_LancerCharge daoLancerCharge = new DAO_LancerCharge();
+        DAO_LancerDecharge daoLancerDecharge = new DAO_LancerDecharge();
+        DAO_LanceOrdre daoLanceOrdre = new DAO_LanceOrdre();
+        DAO_Joueur daoJoueur = new DAO_Joueur();
+        DAO_ValDe daoValDe = new DAO_ValDe();
+        
+        JSONObject jsonData = new JSONObject();
+        JSONArray playerList = new JSONArray();
+        JSONArray jsonArray = new JSONArray();
+        
+        RequestBuilder reply = new RequestBuilder();
+        
+        int id = request.getData().getInt("id");
+        List<Joueur> joueurs = daoPartie.getPartieJoueur(id);
+        List<LancerCharge> lancerCharge = daoLancerCharge.getPartieLancerCharge(id);
+        List<LanceOrdre> lanceOrdre = daoLanceOrdre.getPartieLanceOrdre(id);
+        List<LancerDecharge> lancerDecharge = daoLancerDecharge.getPartieLancerDecharge(id);
+        
+        jsonData.put("id", id);
+        for (Joueur j : joueurs) {
+            playerList.put(j.getPseudo());
+        }
+        jsonData.put("Players", playerList);
+        
+        for(LancerCharge lc : lancerCharge) {
+            JSONObject jsonRoll = new JSONObject();
+            JSONArray jsonDices = new JSONArray();
+            Joueur j = daoJoueur.find(lc.getLancerChargePK().getPseudo());
+            ValDe dices = daoValDe.find(lc.getCodeDe().getCodeDe());
+            int numLancer = lc.getLancerChargePK().getNumLanceINT();
+            
+            jsonDices.put(dices.getVal1INT());
+            jsonDices.put(dices.getVal2INT());
+            jsonDices.put(dices.getVal3INT());
+            
+            jsonRoll.put("username", j.getPseudo());
+            jsonRoll.put("dices", jsonDices);
+            jsonRoll.put("number", numLancer);
+            
+            jsonArray.put(jsonRoll);
+        }
+        
+        for(LanceOrdre lo : lanceOrdre) {
+            JSONObject jsonRoll = new JSONObject();
+            JSONArray jsonDices = new JSONArray();
+            Joueur j = daoJoueur.find(lo.getLanceOrdrePK().getPseudo());
+            ValDe dices = daoValDe.find(lo.getCodeDe().getCodeDe());
+            //int numLancer = lo.getLanceOrdrePK().getNumLanceINT();
+            
+            jsonDices.put(dices.getVal1INT());
+            jsonDices.put(dices.getVal2INT());
+            jsonDices.put(dices.getVal3INT());
+            
+            jsonRoll.put("username", j.getPseudo());
+            jsonRoll.put("dices", jsonDices);
+            //jsonRoll.put("number", numLancer);
+            
+            jsonArray.put(jsonRoll);
+        }
+        
+        for(LancerDecharge ld : lancerDecharge) {
+            JSONObject jsonRoll = new JSONObject();
+            JSONArray jsonDices = new JSONArray();
+            Joueur j = daoJoueur.find(ld.getLancerDechargePK().getPseudo());
+            ValDe dices = daoValDe.find(ld.getCodeDe().getCodeDe());
+            int numLancer = ld.getLancerDechargePK().getNumLanceINT();
+            
+            jsonDices.put(dices.getVal1INT());
+            jsonDices.put(dices.getVal2INT());
+            jsonDices.put(dices.getVal3INT());
+            
+            jsonRoll.put("username", j.getPseudo());
+            jsonRoll.put("dices", jsonDices);
+            jsonRoll.put("number", numLancer);
+            
+            jsonArray.put(jsonRoll);
+        }
+        jsonData.put("rolls", jsonArray);
+        
+        reply.setData(RequestBuilder.REPLAY_DATA, jsonData);
+        reply.build();
+        peer.getBasicRemote().sendText(reply.getMessage());
+        
     }
   
 }

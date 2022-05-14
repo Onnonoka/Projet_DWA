@@ -6,11 +6,16 @@ package org.ws;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.dao.DAO_LanceOrdre;
+import org.dao.DAO_LancerCharge;
+import org.dao.DAO_LancerDecharge;
+import org.dao.DAO_Resultat;
 import org.dao.DAO_ValDe;
 import org.donnees.Joueur;
 import org.donnees.LanceOrdre;
 import org.donnees.LancerCharge;
 import org.donnees.LancerDecharge;
+import org.donnees.Resultat;
 import org.donnees.ValDe;
 
 /**
@@ -23,6 +28,8 @@ public class GamePlayer {
     public static final int PLAYER_READY = 1;
     public static final int PLAYER_REFUSE = 2;
     
+    private final int gameId;
+    
     private Joueur joueur;
     
     private int status;
@@ -32,17 +39,20 @@ public class GamePlayer {
     private List<LancerCharge> lancerCharge;
     private List<LanceOrdre> lanceOrdre;
     private List<LancerDecharge> lancerDecharge;
+    private Resultat resultat;
     
     private DiceValue lastRoll;
     
-    public GamePlayer(Joueur j) {
+    public GamePlayer(Joueur j, int id) {
         joueur = j;
+        gameId = id;
         status = PLAYER_WAITING;
         token = 0;
         lancerCharge = new ArrayList();
         lanceOrdre = new ArrayList();
         lancerDecharge = new ArrayList();
-    }
+        resultat = new Resultat(gameId, joueur.getPseudo());
+    };
     
     public void setStatus(int s) {
         status = s;
@@ -68,7 +78,7 @@ public class GamePlayer {
         token -= nb;
     }
     
-    public void rollLoad(int d1, int d2, int d3, int gameId, int numLance) {
+    public void rollLoad(int d1, int d2, int d3, int numLance) {
         DAO_ValDe daoValDe = new DAO_ValDe();
         ValDe valDe  = new ValDe();
         String codeDe = String.valueOf(d1) + String.valueOf(d2) + String.valueOf(d3); 
@@ -86,10 +96,11 @@ public class GamePlayer {
         }
         lc.setCodeDe(valDe);
         lancerCharge.add(lc);
+        resultat.setNbJetonCharge(token);
         lastRoll = new DiceValue(d1, d2, d3);
     }
     
-    public void rollOrder(int d1, int d2, int d3, int gameId, int numLance) {
+    public void rollOrder(int d1, int d2, int d3, int numLance) {
         DAO_ValDe daoValDe = new DAO_ValDe();
         ValDe valDe  = new ValDe();
         String codeDe = String.valueOf(d1) + String.valueOf(d2) + String.valueOf(d3); 
@@ -110,7 +121,7 @@ public class GamePlayer {
         lastRoll = new DiceValue(d1, d2, d3);
     }
     
-    public void rollDump(int d1, int d2, int d3, int gameId, int numLance) {
+    public void rollDump(int d1, int d2, int d3, int numLance) {
         DAO_ValDe daoValDe = new DAO_ValDe();
         ValDe valDe  = new ValDe();
         String codeDe = String.valueOf(d1) + String.valueOf(d2) + String.valueOf(d3); 
@@ -128,6 +139,7 @@ public class GamePlayer {
         }
         ld.setCodeDe(valDe);
         lancerDecharge.add(ld);
+        resultat.setNbJetonDecharge(token);
         lastRoll = new DiceValue(d1, d2, d3);
         
     }
@@ -142,6 +154,24 @@ public class GamePlayer {
     
     public boolean asPlay() {
         return lastRoll != null;
+    }
+    
+    public void store() throws Exception {
+        DAO_LancerCharge daoLancerCharge = new DAO_LancerCharge();
+        DAO_LanceOrdre daoLanceOrdre = new DAO_LanceOrdre();
+        DAO_LancerDecharge daoLancerDecharge = new DAO_LancerDecharge();
+        DAO_Resultat daoResultat = new DAO_Resultat();
+        
+        daoResultat.create(resultat);
+        for(LancerCharge lc : lancerCharge) {
+            daoLancerCharge.create(lc);
+        }
+        for(LanceOrdre lo : lanceOrdre) {
+            daoLanceOrdre.create(lo);
+        }
+        for(LancerDecharge ld : lancerDecharge) {
+            daoLancerDecharge.create(ld);
+        }
     }
     
 }

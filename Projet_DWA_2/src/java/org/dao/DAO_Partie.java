@@ -27,7 +27,7 @@ public class DAO_Partie extends DAO<Partie> {
         // Output Array
         List<Partie> partieArray = new ArrayList();
         // Request
-        Query query = this.entityManager.createQuery("select p.codePartie, p.dateDeb, p.dateFin from Partie p");
+        Query query = entityManager.createQuery("select p.codePartie, p.dateDeb, p.dateFin from Partie p");
         List<Partie> partie = (List<Partie>) query.getResultList();
         Iterator itr = partie.iterator();
         // iterate rows
@@ -37,6 +37,7 @@ public class DAO_Partie extends DAO<Partie> {
             Partie p = new Partie((BigInteger) obj[0]);
             p.setDateDeb((Date) obj[1]);
             p.setDateFin((Date) obj[2]);
+            partieArray.add(p);
         }
         return partieArray;
     }

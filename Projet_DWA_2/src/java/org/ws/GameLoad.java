@@ -75,7 +75,7 @@ public class GameLoad extends GameRound {
     public void newRoll(Session peer, JSONArray dices) throws Exception {
         if (players.get(peer).equals(playerOrder.get(currentPlayer))) {
             GamePlayer gp = playerOrder.get(currentPlayer);
-            gp.rollLoad(dices.getInt(0), dices.getInt(1), dices.getInt(2), id, numLance);
+            gp.rollLoad(dices.getInt(0), dices.getInt(1), dices.getInt(2), numLance);
             sendRoll(dices);
             numLance++;
             endRoll(peer);

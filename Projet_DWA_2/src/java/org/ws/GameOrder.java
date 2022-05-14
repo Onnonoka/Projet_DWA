@@ -45,7 +45,7 @@ public class GameOrder extends GameRound {
         System.out.println("rollOrder");
         if (players.get(peer).equals(playerOrder.get(currentPlayer))) {
             GamePlayer gp = playerOrder.get(currentPlayer);
-            gp.rollOrder(dices.getInt(0), dices.getInt(1), dices.getInt(2), id, numLance);
+            gp.rollOrder(dices.getInt(0), dices.getInt(1), dices.getInt(2), numLance);
             sendRoll(dices);
             numLance++;
             endRoll(peer);

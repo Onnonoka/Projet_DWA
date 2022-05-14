@@ -51,6 +51,9 @@ class Controler {
             case RequestBuilder.INFO_PLAYER_LIST : 
                 this.model.userConnected = reply.data.usernames;
                 break;
+            case RequestBuilder.INFO_GET_HISTORY :
+                this.vue.main.getProfileTab(reply.data.username).setHistory(reply.data);
+                break;
             case RequestBuilder.GAME_NEW_GAME :
                 this.vue.main.addGameTab(reply.data.id, reply.data.player.map(e => e.username));
                 break;
