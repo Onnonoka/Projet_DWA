@@ -151,6 +151,7 @@ public class RequestBuilder {
             case GAME_DATA :
             case GAME_LUNCH_DICE :
             case GAME_END_ROLL :
+            case GAME_END :
                 jsonReplyMessage.put("data", data);
                 break;
             case AUTH_WRONG_CREDENTIALS :

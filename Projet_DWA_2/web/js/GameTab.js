@@ -57,7 +57,7 @@ class GameTab {
                 content += `<button id="dice-${i}" class="dice ${e? "selected" : ""}">${this.game.dices[i]}</button>`;
             });
             content += `</div>`;
-            if (mTurn) {
+            if (mTurn && this.game.gameStatus !== Game.GAME_END) {
                 content += `<div class="bottom"><button id="roll" class="btn">Lancer</button>`;
                 if (this.game.gameStatus === Game.GAME_DECHARGE) {
                     content += `<button id="end" class="btn">Terminer</button>`;
@@ -128,6 +128,12 @@ class GameTab {
         });
         this.game.gameStatus = data.status;
         this.message = `A ${this.model.userData.username === this.game.currentPlayer? "toi" : this.game.currentPlayer} de jouer`;
+        const index = data.players.findIndex(el => {
+            return el.token === 0;
+        });
+        if (index !== -1 && this.gameStatus === Game.GAME_END) {
+            this.message = `${this.game.players[index].username === this.model.userData.username? "Vous avez gagné la partie!" : this.game.players[index].username + " a gagné la partie!"}`;
+        }
         
         this.update();
     }
@@ -154,6 +160,10 @@ class GameTab {
         });
         this.model.ws.send(requestMessage);
         this.update();
+    }
+
+    end(data) {
+        this.setGameData(data);
     }
 }
 

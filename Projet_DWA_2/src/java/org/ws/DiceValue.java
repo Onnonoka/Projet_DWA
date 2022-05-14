@@ -132,7 +132,13 @@ public class DiceValue {
     
     public boolean compare(DiceValue dv) {
         if (weight == 1 && dv.getWeight() == 1) {
-            return d1 > dv.getD1() && d2 > dv.getD2() && d3 > dv.getD3();
+            if (d1 == dv.getD1()) {
+                if (d2 == dv.getD2()) {
+                    return d3 > dv.getD3();
+                }
+                return d2 > dv.getD2();
+            }
+            return d1 > dv.getD1();
         }
         return weight > dv.getWeight();
     }

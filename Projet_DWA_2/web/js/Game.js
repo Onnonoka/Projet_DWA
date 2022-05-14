@@ -9,6 +9,8 @@ class Game {
     static GAME_ORDER = 2;
     static GAME_DECHARGE = 3;
     static GAME_END = 4;
+    static ROUND_WAITING = 5;
+    static ROUND_ENDED = 6;
 
     
     dices;

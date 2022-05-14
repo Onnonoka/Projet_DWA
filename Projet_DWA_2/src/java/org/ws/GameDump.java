@@ -53,7 +53,6 @@ public class GameDump extends GameRound {
             sendRoll(dices);
             numLance++;
             currentReroll++;
-            System.out.println("Condition 2 = " + (currentReroll >= turnReroll && !firstPlayerTurn));
             if ((currentReroll >= 3 && firstPlayerTurn) || (currentReroll >= turnReroll && !firstPlayerTurn) ) {
                 endRoll(peer);
             }
@@ -131,8 +130,8 @@ public class GameDump extends GameRound {
             winner.removeToken(winner.getLastRoll().getToken());
             looser.addToken(winner.getLastRoll().getToken());
         } else {
-            winner.removeToken(winner.getToken());
             looser.addToken(winner.getToken());
+            winner.removeToken(winner.getToken());
         }
     }
 
@@ -151,8 +150,17 @@ public class GameDump extends GameRound {
     @Override
     protected void endPhase() throws Exception {
         status = Game.ROUND_ENDED;
+        sendGame(RequestBuilder.GAME_END);
     }
     
-    
-    
+    public GamePlayer getWinner() {
+        GamePlayer winner = null;
+        for (GamePlayer gp : players.values()) {
+            if (winner.getToken() == 0) {
+                winner = gp;
+            }
+        }
+        return winner;
+    }
+ 
 }

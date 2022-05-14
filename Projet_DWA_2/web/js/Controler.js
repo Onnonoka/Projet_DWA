@@ -71,7 +71,8 @@ class Controler {
             case RequestBuilder.GAME_END_ROLL :
                 this.vue.main.getGameTab(reply.data.id).game.endRoll();
                 break;
-
+            case RequestBuilder.GAME_END :
+                this.vue.main.getGameTab(reply.data.id).end(reply.data);
         }
         this.vue.update();
 

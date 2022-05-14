@@ -30,6 +30,14 @@ class RequestBuilder {
     static GAME_DATA = 12;
     static GAME_LUNCH_DICE = 13;
     static GAME_END_ROLL = 14;
+    static GAME_END = 15;
+    static GAME_DICE_SELECT = 16;
+    
+    static REPLAY_NEW_REPLAY = 17;
+    
+    static REPLAY_BACK = 18;
+    static REPLAY_NEXT = 19;
+    static REPLAY_DATA = 20;
 
 }
 
