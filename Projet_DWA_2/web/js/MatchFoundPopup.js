@@ -32,17 +32,17 @@ class MatchFoundPopup {
     }
 
     update() {
-        let content = `<div class="matchmanking">
+        let content = `<div class="matchmaking">
         <div class="title">Partie trouver</div>
         <div class="content">
         <div class="horizontal-list">`;
         this.status.forEach(element => {
             if (element === PlayerStatus.PLAYER_READY) {
-                content += `<div>Pret</div>`;
+                content += `<div class="statut">Pret</div>`;
             } else if (element === PlayerStatus.PLAYER_REFUSE) {
-                content += `<div>Refuser</div>`;
+                content += `<div class="statut">Refuser</div>`;
             } else {
-                content += `<div>En attente...</div>`;
+                content += `<div class="statut">En attente...</div>`;
             }
         });
         content += `</div><div classs="footer">`;
