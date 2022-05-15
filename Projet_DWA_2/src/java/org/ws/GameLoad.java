@@ -94,7 +94,7 @@ public class GameLoad extends GameRound {
     protected void deliverToken() {
         GamePlayer looser = null;
         DiceValue maxRoll = null;
-        
+         
         for (GamePlayer gp : players.values()) {
             if (maxRoll == null) {
                 looser = gp;

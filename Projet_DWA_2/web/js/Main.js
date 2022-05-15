@@ -1,5 +1,6 @@
 import GameTab from "./GameTab.js";
 import ProfileTab from "./ProfileTab.js";
+import ReplayTab from "./ReplayTab.js";
 
 class Main {
 
@@ -105,6 +106,14 @@ class Main {
             }
         });
         return tab;
+    }
+
+    addReplayTab(data) {
+        console.log(data);
+        let tab = new ReplayTab(this.model, data.id, data.rolls, data.players);
+        this.tabs.push(tab);
+        this.tabsTitle.push("Replay " + data.id);
+        this.update();
     }
 }
 

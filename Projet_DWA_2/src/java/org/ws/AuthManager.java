@@ -217,8 +217,11 @@ public class AuthManager {
         DAO_ValDe daoValDe = new DAO_ValDe();
         
         JSONObject jsonData = new JSONObject();
+        JSONObject rolls = new JSONObject();
+        JSONArray loadRoll = new JSONArray();
+        JSONArray orderRoll = new JSONArray();
+        JSONArray dumpRoll = new JSONArray();
         JSONArray playerList = new JSONArray();
-        JSONArray jsonArray = new JSONArray();
         
         RequestBuilder reply = new RequestBuilder();
         
@@ -232,7 +235,7 @@ public class AuthManager {
         for (Joueur j : joueurs) {
             playerList.put(j.getPseudo());
         }
-        jsonData.put("Players", playerList);
+        jsonData.put("players", playerList);
         
         for(LancerCharge lc : lancerCharge) {
             JSONObject jsonRoll = new JSONObject();
@@ -249,9 +252,9 @@ public class AuthManager {
             jsonRoll.put("dices", jsonDices);
             jsonRoll.put("number", numLancer);
             
-            jsonArray.put(jsonRoll);
+            loadRoll.put(jsonRoll);
         }
-        
+        rolls.put("charge", loadRoll);
         for(LanceOrdre lo : lanceOrdre) {
             JSONObject jsonRoll = new JSONObject();
             JSONArray jsonDices = new JSONArray();
@@ -267,9 +270,9 @@ public class AuthManager {
             jsonRoll.put("dices", jsonDices);
             jsonRoll.put("number", numLancer);
             
-            jsonArray.put(jsonRoll);
+            orderRoll.put(jsonRoll);
         }
-        
+        rolls.put("ordre", orderRoll);
         for(LancerDecharge ld : lancerDecharge) {
             JSONObject jsonRoll = new JSONObject();
             JSONArray jsonDices = new JSONArray();
@@ -285,9 +288,10 @@ public class AuthManager {
             jsonRoll.put("dices", jsonDices);
             jsonRoll.put("number", numLancer);
             
-            jsonArray.put(jsonRoll);
+            dumpRoll.put(jsonRoll);
         }
-        jsonData.put("rolls", jsonArray);
+        rolls.put("decharge", dumpRoll);
+        jsonData.put("rolls", rolls);
         
         reply.setData(RequestBuilder.REPLAY_DATA, jsonData);
         reply.build();

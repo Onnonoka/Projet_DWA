@@ -79,6 +79,9 @@ class Controler {
                 break;
             case RequestBuilder.GAME_END :
                 this.vue.main.getGameTab(reply.data.id).end(reply.data);
+                break;
+            case RequestBuilder.REPLAY_DATA :
+                this.vue.main.addReplayTab(reply.data);
         }
         this.vue.update();
     }
