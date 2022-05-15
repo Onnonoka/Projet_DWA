@@ -9,27 +9,37 @@ import java.math.BigInteger;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
+/**
+ *
+ * @author fred2
+ */
 @Embeddable
 public class LanceOrdrePK implements Serializable {
 
     @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 20)
     @Column(name = "PSEUDO")
     private String pseudo;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "CODE_PARTIE")
     private BigInteger codePartie;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "NUM_LANCE")
+    private BigInteger numLance;
 
     public LanceOrdrePK() {
     }
 
-    public LanceOrdrePK(String pseudo, BigInteger codePartie) {
+    public LanceOrdrePK(String pseudo, BigInteger codePartie, BigInteger numLance) {
         this.pseudo = pseudo;
         this.codePartie = codePartie;
-    }
-    
-    public LanceOrdrePK(String pseudo, int codePartie) {
-        this(pseudo, BigInteger.valueOf(codePartie));
+        this.numLance = numLance;
     }
 
     public String getPseudo() {
@@ -51,9 +61,17 @@ public class LanceOrdrePK implements Serializable {
     public void setCodePartie(BigInteger codePartie) {
         this.codePartie = codePartie;
     }
+
+    public BigInteger getNumLance() {
+        return numLance;
+    }
     
-    public void setCodePartie(int codePartie) {
-        this.setCodePartie(BigInteger.valueOf(codePartie));
+    public int getNumLanceINT() {
+        return this.getNumLance().intValue();
+    }
+
+    public void setNumLance(BigInteger numLance) {
+        this.numLance = numLance;
     }
 
     @Override
@@ -61,6 +79,7 @@ public class LanceOrdrePK implements Serializable {
         int hash = 0;
         hash += (pseudo != null ? pseudo.hashCode() : 0);
         hash += (codePartie != null ? codePartie.hashCode() : 0);
+        hash += (numLance != null ? numLance.hashCode() : 0);
         return hash;
     }
 
@@ -77,12 +96,15 @@ public class LanceOrdrePK implements Serializable {
         if ((this.codePartie == null && other.codePartie != null) || (this.codePartie != null && !this.codePartie.equals(other.codePartie))) {
             return false;
         }
+        if ((this.numLance == null && other.numLance != null) || (this.numLance != null && !this.numLance.equals(other.numLance))) {
+            return false;
+        }
         return true;
     }
 
     @Override
     public String toString() {
-        return "org.donnees.LanceOrdrePK[ pseudo=" + pseudo + ", codePartie=" + codePartie + " ]";
+        return "org.donnees.LanceOrdrePK[ pseudo=" + pseudo + ", codePartie=" + codePartie + ", numLance=" + numLance + " ]";
     }
     
 }

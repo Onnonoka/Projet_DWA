@@ -15,13 +15,18 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
+/**
+ *
+ * @author fred2
+ */
 @Entity
 @Table(name = "LANCE_ORDRE")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "LanceOrdre.findAll", query = "SELECT l FROM LanceOrdre l"),
     @NamedQuery(name = "LanceOrdre.findByPseudo", query = "SELECT l FROM LanceOrdre l WHERE l.lanceOrdrePK.pseudo = :pseudo"),
-    @NamedQuery(name = "LanceOrdre.findByCodePartie", query = "SELECT l FROM LanceOrdre l WHERE l.lanceOrdrePK.codePartie = :codePartie")})
+    @NamedQuery(name = "LanceOrdre.findByCodePartie", query = "SELECT l FROM LanceOrdre l WHERE l.lanceOrdrePK.codePartie = :codePartie"),
+    @NamedQuery(name = "LanceOrdre.findByNumLance", query = "SELECT l FROM LanceOrdre l WHERE l.lanceOrdrePK.numLance = :numLance")})
 public class LanceOrdre implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -41,13 +46,14 @@ public class LanceOrdre implements Serializable {
         this.lanceOrdrePK = lanceOrdrePK;
     }
 
-    public LanceOrdre(String pseudo, BigInteger codePartie) {
-        this.lanceOrdrePK = new LanceOrdrePK(pseudo, codePartie);
+    public LanceOrdre(String pseudo, BigInteger codePartie, BigInteger numLance) {
+        this.lanceOrdrePK = new LanceOrdrePK(pseudo, codePartie, numLance);
     }
     
-    public LanceOrdre(String pseudo, int codePartie) {
-        this(pseudo, BigInteger.valueOf(codePartie));
+    public LanceOrdre(String pseudo, int codePartie, int numLance) {
+        this(pseudo, BigInteger.valueOf(codePartie), BigInteger.valueOf(numLance));
     }
+
 
     public LanceOrdrePK getLanceOrdrePK() {
         return lanceOrdrePK;

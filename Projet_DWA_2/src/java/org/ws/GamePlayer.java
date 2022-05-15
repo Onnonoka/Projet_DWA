@@ -104,7 +104,7 @@ public class GamePlayer {
         DAO_ValDe daoValDe = new DAO_ValDe();
         ValDe valDe  = new ValDe();
         String codeDe = String.valueOf(d1) + String.valueOf(d2) + String.valueOf(d3); 
-        LanceOrdre lo = new LanceOrdre(joueur.getPseudo(), gameId);
+        LanceOrdre lo = new LanceOrdre(joueur.getPseudo(), gameId, numLance);
         try {
             valDe.setCodeDe(codeDe);
             valDe.setVal1(d1);

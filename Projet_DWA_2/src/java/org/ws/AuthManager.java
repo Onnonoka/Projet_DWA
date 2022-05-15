@@ -257,7 +257,7 @@ public class AuthManager {
             JSONArray jsonDices = new JSONArray();
             Joueur j = daoJoueur.find(lo.getLanceOrdrePK().getPseudo());
             ValDe dices = daoValDe.find(lo.getCodeDe().getCodeDe());
-            //int numLancer = lo.getLanceOrdrePK().getNumLanceINT();
+            int numLancer = lo.getLanceOrdrePK().getNumLanceINT();
             
             jsonDices.put(dices.getVal1INT());
             jsonDices.put(dices.getVal2INT());
@@ -265,7 +265,7 @@ public class AuthManager {
             
             jsonRoll.put("username", j.getPseudo());
             jsonRoll.put("dices", jsonDices);
-            //jsonRoll.put("number", numLancer);
+            jsonRoll.put("number", numLancer);
             
             jsonArray.put(jsonRoll);
         }

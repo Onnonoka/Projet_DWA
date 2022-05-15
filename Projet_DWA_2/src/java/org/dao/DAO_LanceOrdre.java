@@ -25,15 +25,15 @@ public class DAO_LanceOrdre extends DAO<LanceOrdre> {
         // Output Array
         List<LanceOrdre> lanceOrdreArray = new ArrayList();
         // Request
-        Query query = this.entityManager.createQuery("select lo.lanceOrdrePK.pseudo, lo.lanceOrdrePK.codePartie, lo.codeDe from LanceOrdre lo");
+        Query query = this.entityManager.createQuery("select lo.lanceOrdrePK.pseudo, lo.lanceOrdrePK.codePartie,  lo.lanceOrdrePK.numLance, lo.codeDe from LanceOrdre lo");
         List<LanceOrdre> lance = (List<LanceOrdre>) query.getResultList();
         Iterator itr = lance.iterator();
         // iterate rows
         while(itr.hasNext()) {
             Object[] obj = (Object[]) itr.next();
             // get the resultat table field
-            LanceOrdre lo = new LanceOrdre((String) obj[0], (BigInteger) obj[1]);
-            lo.setCodeDe((ValDe) obj[2]);
+            LanceOrdre lo = new LanceOrdre((String) obj[0], (BigInteger) obj[1], (BigInteger) obj[2]);
+            lo.setCodeDe((ValDe) obj[3]);
             
             lanceOrdreArray.add(lo);
         }
@@ -50,15 +50,15 @@ public class DAO_LanceOrdre extends DAO<LanceOrdre> {
         // Output Array
         List<LanceOrdre> lanceOrdreArray = new ArrayList();
         // Request
-        Query query = this.entityManager.createQuery("select lo.lanceOrdrePK.pseudo, lo.lanceOrdrePK.codePartie, lo.codeDe from LanceOrdre lo where lo.lanceOrdrePK.codePartie = " + codePartie);
+        Query query = this.entityManager.createQuery("select lo.lanceOrdrePK.pseudo, lo.lanceOrdrePK.codePartie,  lo.lanceOrdrePK.numLance, lo.codeDe from LanceOrdre lo where lo.lanceOrdrePK.codePartie = " + codePartie);
         List<LanceOrdre> lance = (List<LanceOrdre>) query.getResultList();
         Iterator itr = lance.iterator();
         // iterate rows
         while(itr.hasNext()) {
             Object[] obj = (Object[]) itr.next();
             // get the resultat table field
-            LanceOrdre lo = new LanceOrdre((String) obj[0], (BigInteger) obj[1]);
-            lo.setCodeDe((ValDe) obj[2]);
+            LanceOrdre lo = new LanceOrdre((String) obj[0], (BigInteger) obj[1],  (BigInteger) obj[2]);
+            lo.setCodeDe((ValDe) obj[3]);
             
             lanceOrdreArray.add(lo);
         }
