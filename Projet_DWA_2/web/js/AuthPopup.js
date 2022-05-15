@@ -152,6 +152,8 @@ class AuthPopup {
         this.model.loginStatus = Model.CONNECTING;
         setTimeout(() => {
           if (this.model.loginStatus === Model.CONNECTING) {
+            document.getElementById("users").style.display = "none";
+            document.getElementById("main").style.display = "none"; 
             new AuthPopup(
               this.model,
               this.requestType,
@@ -159,6 +161,8 @@ class AuthPopup {
             );
           }
         }, 5000);
+        document.getElementById("users").style.display = "grid";
+        document.getElementById("main").style.display = "grid"; 
       } else {
         new AuthPopup(this.model, 0);
       }

@@ -48,15 +48,21 @@ class ProfileTab {
                 <div>Nombre moyen de jeton charge : ${this.player.average1}</div>
                 <div>Nombre moyen de jeton decharge : ${this.player.average2}</div>
             </div>
+            <hr />
+            <div class="history_part">
+            <span>Historique</span>
             <div class="history">
-                <table>`;
+                <table>
+                <tr>
+                    <td>id</td><td>Date</td><td>nb jetons charge</td><td>nb jetons décharge</td><td>Résultat</td>
+                </tr>`;
         this.history.forEach((e, i) => {
-            content += `<tr id="hist-${i}">
-                <td>${e.id}</td><td>${e.date}</td><td>${e.nbJetonCharge}</td><td>${e.nbJetonDecharge}</td><td>${e.win? "Victoire" : "Defaite"}</td>
+            content += `<tr>
+                <td>${e.id}</td><td>${e.date}</td><td>${e.nbJetonCharge}</td><td>${e.nbJetonDecharge}</td><td>${e.win? "Victoire" : "Defaite"}</td><td><button id="hist-${i}">voir replay</button></td>
             </tr>`;
         });
 
-        content += `</table></div></div>`;
+        content += `</table></div></div></div>`;
         this.container.innerHTML = content;
         this.updateEventListener();
     }

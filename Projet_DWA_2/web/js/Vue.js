@@ -27,6 +27,8 @@ class Vue {
         new AuthPopup(this.model, 0);
         this.main = new Main(this.model);
         this.userList = new UsersList(this.model, this.main);
+        document.getElementById("users").style.display = "none";
+        document.getElementById("main").style.display = "none"; 
     }
 
     update() {

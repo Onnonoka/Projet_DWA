@@ -41,22 +41,35 @@ class GameTab {
         let content = "";
         if (this.gameStarted) {
             content += `<div class="game">
-            <div class="players">`;
+            <div class="players">
+            <div class="player_points">`;
             this.game.players.forEach(e => {
                 content += `<div class="player ${e.username === this.game.currentPlayer? "current" : ""}">
-                    <div class="username">${e.username}</div>
+                    <div class="username">${e.username} : </div>
                     <div class="token">${e.token}</div>
                     <div class="lastTunr">${e.lastTurnToken}</div>
                 </div>`;
             });
-            content += `</div><div class="center-token">Pot : ${this.game.token}</div>`;
-            content += `<div class="top"><div class="turn">Tour numéro : ${this.turn}</div><div="phase">Phase de ${this.game.gameStatus === Game.GAME_CHARGE? "charge" : "Decharge"}</div>`;
+            content += `</div>`;
+                        
+            content += `<div class="info_tour">`;
+            content += `<div class="top">
+                        <div class="turn">Tour numéro : ${this.turn}</div>
+                        <div="phase">Phase de ${this.game.gameStatus === Game.GAME_CHARGE? "charge" : "Decharge"}</div>`;
+            content += `</div>`;
+            content += `</div>`;
+            content += `<div class="game_side">`;
+            
+            content += `<div class="center-token">Pot : ${this.game.token}</div>`;
             content += `<div class="message">${this.message}</div>`;
             content += `<div class="dices">`;
             this.dicesSelected.forEach((e, i) => {
                 content += `<button id="dice-${i}" class="dice ${e? "selected" : ""}">${this.game.dices[i]}</button>`;
             });
             content += `</div>`;
+            if (this.game.gameStatus === Game.GAME_DECHARGE) {
+                content += `<span>Clique sur les deux que tu veux garder après ton premier lancé !</span>`;
+            }
             if (mTurn && this.game.gameStatus !== Game.ROUND_ENDED) {
                 content += `<div class="bottom"><button id="roll" class="btn">Lancer</button>`;
                 if (this.game.gameStatus === Game.GAME_DECHARGE) {
@@ -64,6 +77,7 @@ class GameTab {
                 }
                 content += `</div>`;
             }
+            content += `</div>`
             content += `</div>`;
         }
         this.container.innerHTML = content;
