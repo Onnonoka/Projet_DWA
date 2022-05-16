@@ -62,7 +62,7 @@ public class ws421 {
                     break;
                 case RequestBuilder.GAME_END_ROLL :
                     gamesManager.playerEndTurn(peer, request);
-                    break;
+                    break;  
                 case RequestBuilder.REPLAY_NEW_REPLAY :
                     authManager.getReplay(peer, request);
                     break;

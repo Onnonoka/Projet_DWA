@@ -8,9 +8,9 @@ class GameTab {
 
     model;
     container;
-    gameId;
-
+    gameId; 
     game;
+    main;
 
     popup;
 
@@ -21,9 +21,10 @@ class GameTab {
     message;
     turn;
 
-    constructor(model, players, gameId) {
+    constructor(model, players, gameId, main) {
         this.model = model;
         this.gameId = gameId;
+        this.main = main;
 
         this.game = new Game(players);
 
@@ -45,9 +46,9 @@ class GameTab {
             <div class="player_points">`;
             this.game.players.forEach(e => {
                 content += `<div class="player ${e.username === this.game.currentPlayer? "current" : ""}">
-                    <div class="username">${e.username} : </div>
-                    <div class="token">${e.token}</div>
-                    <div class="lastTunr">${e.lastTurnToken}</div>
+                    <div class="username">${e.username}</div>
+                    <div class="token">: ${e.token}</div>
+                    <div class="lastTunr">(${e.lastTurnToken})</div>
                 </div>`;
             });
             content += `</div>`;
@@ -68,7 +69,7 @@ class GameTab {
             });
             content += `</div>`;
             if (this.game.gameStatus === Game.GAME_DECHARGE) {
-                content += `<span>Clique sur les deux que tu veux garder après ton premier lancé !</span>`;
+                content += `<span>Clique sur le ou les dés que tu veux garder après ton premier lancé !</span>`;
             }
             if (mTurn && this.game.gameStatus !== Game.ROUND_ENDED) {
                 content += `<div class="bottom"><button id="roll" class="btn">Lancer</button>`;
@@ -77,7 +78,10 @@ class GameTab {
                 }
                 content += `</div>`;
             }
-            content += `</div>`
+            if (this.game.gameStatus === Game.ROUND_ENDED){
+                content += `<div class="shutpage"><button id="btnshutpage" class="btn">Fermer la page</button></div>`
+            }
+            content += `</div>`;
             content += `</div>`;
         }
         this.container.innerHTML = content;
@@ -108,6 +112,12 @@ class GameTab {
                     this.update();
                 }
             });
+        }
+        const shutpage = document.getElementById("btnshutpage");
+        if (shutpage !== null) {
+            shutpage.onclick = () => {
+                this.main.removeGameTab(this.gameId);
+            }
         }
 
     }

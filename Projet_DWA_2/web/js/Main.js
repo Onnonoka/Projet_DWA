@@ -79,7 +79,7 @@ class Main {
   }
 
     addGameTab(gameId, players) {
-        let tab = new GameTab(this.model, players, gameId);
+        let tab = new GameTab(this.model, players, gameId, this);
         this.tabs.push(tab);
         this.tabsTitle.push("Partie " + gameId);
         this.update();
@@ -88,7 +88,6 @@ class Main {
     removeGameTab(gameId) {
         const index = this.tabsTitle.indexOf("Partie " + gameId);
         if (index > -1) {
-            this.tabs[index].closePopup();
             this.tabsTitle.splice(index, 1);
             this.tabs.splice(index, 1);
         }
@@ -110,9 +109,23 @@ class Main {
 
     addReplayTab(data) {
         console.log(data);
-        let tab = new ReplayTab(this.model, data.id, data.rolls, data.players);
+        let tab = new ReplayTab(this.model, data.id, data.rolls, data.players, this);
         this.tabs.push(tab);
         this.tabsTitle.push("Replay " + data.id);
+        this.update();
+    }
+
+    removeReplayTab(data) {
+        console.log("cest la data dans romevereplaytab : ", data);
+        const index = this.tabsTitle.indexOf("Replay " + data.gameId);
+        if (index > -1) {
+            console.log(index);
+            this.tabsTitle.splice(index, 1);
+            this.tabs.splice(index, 1);
+        }
+        if (this.tabIndex >= this.tabsTitle.length) {
+            this.tabIndex--;
+        }
         this.update();
     }
 }

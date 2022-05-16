@@ -3,6 +3,7 @@ import Game from "./Game.js";
 class ReplayTab {
     model;
     container;
+    main;
 
     rolls;
     game; 
@@ -14,8 +15,10 @@ class ReplayTab {
     nbPlayer;
     playerPlayTurn;
 
-    constructor(model, id, rolls, players) {
+    constructor(model, id, rolls, players, main) {
         this.model = model;
+        this.main = main;
+        console.log(main);
         this.rolls = [];
         rolls.charge.forEach(e => {
             this.rolls[e.number] = {username: e.username, dices: e.dices}
@@ -43,16 +46,24 @@ class ReplayTab {
         this.container = document.getElementById("main-content");
         let content = "";
         content += `<div class="game">
-        <div class="players">`;
+        <div class="players">
+        <div class="player_points">`;
         this.game.players.forEach(e => {
             content += `<div class="player ${e.username === this.game.currentPlayer? "current" : ""}">
                 <div class="username">${e.username}</div>
-                <div class="token">${e.token}</div>
+                <div class="token">: ${e.token}</div>
                 <div class="lastTunr">${e.lastTurnToken}</div>
             </div>`;
         });
+        content += `</div>`;
+        content += `<div class="info_tour">`;
+            content += `<div class="top">
+                        <div class="turn">Tour numéro : ${this.turn}</div>
+                        <div="phase">Phase de ${this.game.gameStatus === Game.GAME_CHARGE? "charge" : "Decharge"}</div>`;
+            content += `</div>`;
+            content += `</div>`;
+        content += `<div class="game_side">`;
         content += `</div><div class="center-token">Pot : ${this.game.token}</div>`;
-        content += `<div class="top"><div class="turn">Tour numéro : ${this.turn}</div><div="phase">Phase de ${this.game.gameStatus === Game.GAME_CHARGE? "charge" : "Decharge"}</div>`;
         if (this.game.gameStatus === Game.GAME_END) {
             content += `<div class="message">${this.winner} a gagné la partie!</div>`;
         } else {
@@ -70,6 +81,10 @@ class ReplayTab {
         if (this.currentRoll < this.rolls.length - 1) {
             content += `<button id="next" class="btn">Suivant</button>`;
         }
+        content += `</div>`;
+        if (this.game.gameStatus === Game.GAME_END){
+            content += `<div class="shutpage"><button id="btnshutpage" class="btn">Fermer la page</button></div>`
+        }
         content += `</div></div>`;
         this.container.innerHTML = content;
         this.updateEventListener();
@@ -86,6 +101,12 @@ class ReplayTab {
         if (previusButton !== null) {
             previusButton.onclick = () => {
                 this.previus();
+            }
+        }
+        const shutpage = document.getElementById("btnshutpage");
+        if (shutpage !== null) {
+            shutpage.onclick = () => {
+                this.main.removeReplayTab(this);
             }
         }
     }
