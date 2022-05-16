@@ -52,6 +52,10 @@ class Controler {
                 this.model.userConnected = reply.data.usernames;
                 break;
             case RequestBuilder.INFO_GET_HISTORY :
+                console.log("ICI");
+                console.log(reply.data);
+                console.log(this.vue.main);
+                console.log(this.vue.main.getProfileTab(reply.data.username));
                 this.vue.main.getProfileTab(reply.data.username).setHistory(reply.data);
                 break;
             case RequestBuilder.GAME_NEW_GAME :

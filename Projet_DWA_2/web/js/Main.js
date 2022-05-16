@@ -66,19 +66,14 @@ class Main {
         this.update();
     }
     
-    getProfileTab(data) {
-    let tab;
-    console.log("c'est la data de profiletab", data);
-    console.log(this.tabs[0]);
-    console.log("avant c'est le tab");
-    this.tabs.forEach((element) => {
-      if ( element.player.pseudo === data) {
-        tab = element;
-      }
-    });
-    console.log(tab);
-    return tab;
-  }
+    getProfileTab(username) {
+        let tab;
+        const index = this.tabsTitle.indexOf(username === this.model.userData.username? "Profile" : username);
+        if (index !== -1) {
+            tab = this.tabs[index];
+        }
+        return tab;
+    }
 
     addGameTab(gameId, players) {
         let tab = new GameTab(this.model, players, gameId, this);
@@ -101,11 +96,10 @@ class Main {
 
     getGameTab(gameId) {
         let tab;
-        this.tabs.forEach( element => {
-            if (element instanceof GameTab && element.gameId === gameId) {
-                tab = element;
-            }
-        });
+        const index = this.tabsTitle.indexOf("Partie " + gameId);
+        if (index !== -1) {
+            tab = this.tabs[index];
+        }
         return tab;
     }
 
@@ -118,7 +112,6 @@ class Main {
     }
 
     removeReplayTab(data) {
-        console.log("cest la data dans romevereplaytab : ", data);
         const index = this.tabsTitle.indexOf("Replay " + data.gameId);
         if (index > -1) {
             console.log(index);

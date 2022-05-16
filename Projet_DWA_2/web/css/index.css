@@ -13,7 +13,8 @@ body {
     padding: 0;
     min-width: 800px;
     width: auto;
-    overflow: hidden;
+    overflow-x: auto;
+    overflow-y: hidden;
 }
 
 #app {
