@@ -7,6 +7,7 @@ package org.ws;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import javax.websocket.Session;
 import org.json.JSONArray;
 
@@ -38,12 +39,14 @@ public class GameOrder extends GameRound {
     public void start() throws Exception {
         status = Game.GAME_ORDER;
         sendGame();
+        setTimeout();
     }
 
     @Override
     public void newRoll(Session peer, JSONArray dices) throws Exception {
         System.out.println("rollOrder");
         if (players.get(peer).equals(playerOrder.get(currentPlayer))) {
+            clearTimeout();
             GamePlayer gp = playerOrder.get(currentPlayer);
             gp.rollOrder(dices.getInt(0), dices.getInt(1), dices.getInt(2), numLance);
             sendRoll(dices);
@@ -120,6 +123,22 @@ public class GameOrder extends GameRound {
         status = Game.ROUND_ENDED;
         nextPhase.setFirstPlayer(firstPlayer);
         nextPhase.start();
+    }
+
+    @Override
+    protected void handleNoReply() throws Exception {        
+        Random rand = new Random();
+        JSONArray diceArray = new JSONArray();
+        Session peer = null;
+        for (Session s : players.keySet()) {
+            if (players.get(s).equals(playerOrder.get(currentPlayer))) {
+                peer = s;
+            }
+        }
+        for (int i = 0; i < 3; i++) {
+            diceArray.put(rand.nextInt(6) + 1); 
+        }
+        newRoll(peer, diceArray);
     }
     
 }

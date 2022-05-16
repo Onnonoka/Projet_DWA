@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Random;
 import javax.websocket.Session;
 import org.json.JSONArray;
 
@@ -43,11 +44,13 @@ public class GameDump extends GameRound {
     public void start() throws Exception {
         status = Game.GAME_DECHARGE;
         sendGame();
+        setTimeout();
     }
 
     @Override
     public void newRoll(Session peer, JSONArray dices) throws Exception {
         if (players.get(peer).equals(playerOrder.get(currentPlayer))) {
+            clearTimeout();
             GamePlayer gp = playerOrder.get(currentPlayer);
             gp.rollDump(dices.getInt(0), dices.getInt(1), dices.getInt(2), numLance);
             sendRoll(dices);
@@ -64,6 +67,7 @@ public class GameDump extends GameRound {
     @Override
     protected void endRoll(Session peer) throws Exception {
         if (players.get(peer).equals(playerOrder.get(currentPlayer))) {
+            clearTimeout();
             currentPlayer++;
             if (firstPlayerTurn) {
                 turnReroll = currentReroll;
@@ -80,6 +84,7 @@ public class GameDump extends GameRound {
             }
             if (!isEnded()) {
                 sendGame();
+                setTimeout();
             }
         } else {
             sendWrongUser(peer);
@@ -149,6 +154,9 @@ public class GameDump extends GameRound {
 
     @Override
     protected void endPhase() throws Exception {
+        for (GamePlayer gp : players.values()) {
+            gp.endDump();
+        }
         status = Game.ROUND_ENDED;
         sendGame(RequestBuilder.GAME_END);
     }
@@ -162,5 +170,32 @@ public class GameDump extends GameRound {
         }
         return winner;
     }
- 
+
+    @Override
+    protected void handleNoReply() throws Exception {
+        Random rand = new Random();
+        JSONArray diceArray = new JSONArray();
+        Session peer = null;
+        for (Session s : players.keySet()) {
+            if (players.get(s).equals(playerOrder.get(currentPlayer))) {
+                peer = s;
+            }
+        }
+
+        if (firstPlayerTurn) {
+            for (int i = 0; i < 3; i++) {
+                for (int J = 0; J < 3; J++) {
+                    diceArray.put(rand.nextInt(6) + 1); 
+                }
+                newRoll(peer, diceArray);
+            } 
+        } else {
+            for (int i = 0; i < turnReroll; i++) {
+                for (int J = 0; J < 3; J++) {
+                    diceArray.put(rand.nextInt(6) + 1); 
+                }
+                newRoll(peer, diceArray);
+            }        
+        }
+    }
 }

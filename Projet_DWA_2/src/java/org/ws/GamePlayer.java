@@ -96,7 +96,6 @@ public class GamePlayer {
         }
         lc.setCodeDe(valDe);
         lancerCharge.add(lc);
-        resultat.setNbJetonCharge(token);
         lastRoll = new DiceValue(d1, d2, d3);
     }
     
@@ -139,17 +138,20 @@ public class GamePlayer {
         }
         ld.setCodeDe(valDe);
         lancerDecharge.add(ld);
-        resultat.setNbJetonDecharge(token);
         lastRoll = new DiceValue(d1, d2, d3);
         
     }
     
-    public DiceValue getLastRoll() {
-        return lastRoll;
+    public void endLoad() {
+        resultat.setNbJetonCharge(token);
     }
     
-    public void newRound() {
-        lastRoll = null;
+    public void endDump() {
+        resultat.setNbJetonDecharge(token);
+    }
+    
+    public DiceValue getLastRoll() {
+        return lastRoll;
     }
     
     public boolean asPlay() {

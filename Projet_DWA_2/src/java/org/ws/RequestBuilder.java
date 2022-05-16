@@ -55,7 +55,6 @@ public class RequestBuilder {
     public static final int REPLAY_NEXT = 19;
     public static final int REPLAY_DATA = 20;
     
-    public static final int GAME_END_PAGE = 21;
     private String message;
     
     private int code = UNDEFINED_CODE;
