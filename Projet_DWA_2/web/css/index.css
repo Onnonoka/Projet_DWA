@@ -31,7 +31,7 @@ body {
     background-color: black;
     display: grid;
     grid-template-columns: auto;
-    grid-template-rows: 5% auto;
+    grid-template-rows: 40px auto;
     height: 100vh;
 }
 #main #header {
@@ -279,8 +279,9 @@ body {
     border: solid 2px #44aef0;
     display: grid;
     grid-template-columns: auto;
-    grid-template-rows: 8% auto 10%;
+    grid-template-rows: 80px auto 80px;
     max-height: 100vh;
+    overflow: auto;
 }
 #users #header {
     display: flex;
@@ -300,6 +301,7 @@ body {
     display: flex;
     flex-direction: column;
     overflow: auto;
+    min-height: 100px;
 }
 .user {
     display: flex;
