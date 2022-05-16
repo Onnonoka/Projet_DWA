@@ -47,9 +47,11 @@ class GameTab {
             this.game.players.forEach(e => {
                 content += `<div class="player ${e.username === this.game.currentPlayer? "current" : ""}">
                     <div class="username">${e.username}</div>
-                    <div class="token">: ${e.token}</div>
-                    <div class="lastTunr">(${e.lastTurnToken})</div>
-                </div>`;
+                    <div class="token">: ${e.token}</div>`;
+                if (e.lastTurnToken !== ""){
+                    content += `<div class="lastTunr">(${e.lastTurnToken})</div>`
+                }
+                content += `</div>`;
             });
             content += `</div>`;
                         
@@ -152,7 +154,7 @@ class GameTab {
         });
         this.game.gameStatus = data.status;
         this.message = `A ${this.model.userData.username === this.game.currentPlayer? "toi" : this.game.currentPlayer} de jouer`;
-        
+        this.dicesSelected = [false, false, false];
         this.update();
     }
 
@@ -166,7 +168,6 @@ class GameTab {
         });
         this.model.ws.send(requestMessage);
         this.update();
-
     }
 
     sendEndRoll() {

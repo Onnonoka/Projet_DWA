@@ -68,7 +68,9 @@ class Main {
     
     getProfileTab(data) {
     let tab;
+    console.log("c'est la data de profiletab", data);
     console.log(this.tabs[0]);
+    console.log("avant c'est le tab");
     this.tabs.forEach((element) => {
       if ( element.player.pseudo === data) {
         tab = element;
