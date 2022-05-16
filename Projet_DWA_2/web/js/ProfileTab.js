@@ -36,7 +36,11 @@ class ProfileTab {
             content += `<div>Mdp : ${this.changeProfil ? '<input type="text" id="MdpProfil" minlenght="0" value=' + this.player.mdp + '>' : this.player.mdp}</div>`;
         }
         content += `
-                <div>Sexe : ${this.changeProfil ? '<input type="text" id="SexProfil" value=' + this.player.sexe + '>' : this.player.sexe}</div>
+                <div>Sexe : ${this.changeProfil ? `<select name="sexe" id="SexProfil">
+                <option value="F">F</option>
+                <option value="H">H</option>
+                <option value="O">O</option>
+            </select>` : this.player.sexe}</div>
                 <div>Ville : ${this.changeProfil ? '<input type="text" id="VilleProfil" value=' + this.player.ville + '>' : this.player.ville}</div>
                 <div>Age : ${this.changeProfil ? '<input type="text" id="AgeProfil" value=' + this.player.age + '>' : this.player.age}</div>
             </div>
@@ -95,7 +99,7 @@ class ProfileTab {
     sendNewInfo() {
         let username = this.player.pseudo;
         let password = document.getElementById("MdpProfil").value;
-        let sex = document.getElementById("SexProfil").value;
+        let sex = document.getElementById("SexProfil").options[document.getElementById("SexProfil").selectedIndex].value;
         let city = document.getElementById("VilleProfil").value;
         let age = document.getElementById("AgeProfil").value;
         let requestMessage = JSON.stringify({
