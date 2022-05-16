@@ -341,11 +341,6 @@ class ReplayTab {
         return aValue.weight > bValue.weight;
     }
 
-    diceEquals(a, b) {
-        const aValue = this.diceValue(a);
-        const bValue = this.diceValue(b);
-        return aValue.code = bValue.code;        
-    }
 }
 
 export default ReplayTab;
