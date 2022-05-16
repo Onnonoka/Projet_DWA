@@ -13,6 +13,7 @@ body {
     padding: 0;
     min-width: 800px;
     width: auto;
+    overflow: hidden;
 }
 
 #app {
@@ -30,6 +31,7 @@ body {
     display: grid;
     grid-template-columns: auto;
     grid-template-rows: 5% auto;
+    height: 100vh;
 }
 #main #header {
     grid-column: 1;
@@ -64,15 +66,17 @@ body {
     grid-row: 2;
     background-color: #ffffff;
     padding: 2%;
+    -max-height: calc(100vh - 9%);
+    overflow: auto;
 }
-#main-content hr{
+#main-content hr {
     border: 2px solid #D3D3D3;
     border-radius: 5px;
     width: 90%;
     margin-top: 40px;
 }
 #main-content .profile {
-    overflow: scroll;
+    overflow: auto;
 }
 #main-content .profile span {
     font-size: 1.5rem;
@@ -266,6 +270,7 @@ body {
     display: grid;
     grid-template-columns: auto;
     grid-template-rows: 8% auto 10%;
+    max-height: 100vh;
 }
 #users #header {
     display: flex;
